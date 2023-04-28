@@ -13,6 +13,16 @@ const StudentOnlyOffDays = [
 
 var TeacherMode = false
 
+const IsBetaVersion = !(window.location.href.includes("github"))
+
+const Version = "1.1.2"
+const BetaVersion = "1.2.0-SNAPSHOT"
+if (IsBetaVersion) {
+    document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
+} else {
+    document.getElementById("beta-indicator").innerHTML = "Version " + Version
+}
+
 const TimerRefreshRate = 1 // Milliseconds !
 
 function load() {
