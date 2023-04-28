@@ -3,7 +3,8 @@ html,
             height: 100%;
             width: 100%;
             font-family: sans-serif;
-            text-align: center
+            text-align: center;
+            color: rgb(0,0,0);
         }
         h1 {
             font-size: 100px
@@ -14,36 +15,16 @@ html,
         h3 {
             font-size: 25px
         }
-           font-size: 10px
-        }
         p {
             font-size: 25px
         }
-        /*
-        button {
-            border-width: 15px;
-            border-style: solid;
-            border-color: gray;
-            background-color: rgb(255, 85, 85);
-            padding: 32px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-            border-radius: 50%;
-            height: 100px;
-            width: 100px;
-        }
-        */
-        button:hover {
+        
+        #rickroll:hover {
             background-color: black;
             color: rgb(255, 85, 85);
             cursor: pointer;
         }
-        button{
+        #rickroll {
 			background-color: red;
 			border-radius: 50%;
             border: none;
@@ -66,3 +47,54 @@ html,
           opacity: 0;
         }
       }
+#settings-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  background-color: #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  color: rgb(0,0,0)
+}
+
+#settings-menu {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: right 0.3s ease-out;
+  z-index: 2
+}
+#settings-menu.open {
+  right: 0;
+}
+
+#close-button {
+  top: 20px;
+  right: 0px;
+  padding: 10px;
+  background-color: #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  color: rgb(0,0,0)
+}
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
+}
+#overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}

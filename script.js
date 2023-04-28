@@ -7,7 +7,8 @@ const offDays = [
 ]
 
 const StudentOnlyOffDays = [
-    new Date("Apr 21, 2023")
+    new Date("Apr 21, 2023"),
+    new Date("June 7, 2023")
 ]
 
 var TeacherMode = false
@@ -100,16 +101,86 @@ const x = setInterval(function() {
 
     document.getElementById("timer").innerHTML = days + "d " + hours + "h "
         + minutes + "m " + seconds + "s ";
-    document.getElementById("teacher-mode-box-label").innerHTML = "Teacher Mode (doesn't count days only students are off) - Remaining Student Only Off Days: " + CalculateStudentOnlyOffDays()
+    document.getElementById("teacher-mode-box-label").innerHTML = "Remaining Student Only Off Days: " + CalculateStudentOnlyOffDays()
     if (distance < 0) {
         clearInterval(x);
         document.getElementById("timer").innerHTML = "SUMMER VACATION!!!!";
         heheheha()
     }
-    document.getElementById("refresh-rate").innerHTML = "Timer Refresh Rate: " + TimerRefreshRate + "ms"
 }, TimerRefreshRate);
+
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  let expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+function getCookie(cname) {
+  let name = cname + "=";
+  let ca = document.cookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
 
 document.getElementById("teachermode").addEventListener("change", (event) => {
     TeacherMode = event.target.checked
+setCookie("teachermode", TeacherMode, 30)
+    document.getElementById("timer").innerHTML = "Calculating..."
+})
+
+document.getElementById("customcolor").addEventListener("change", (event) => {
+    if (event.target.value == "#ffffff") {
+        event.target.value = "#000000"
+        alert("please dont set the color to white kthx")
+    }
+document.getElementById("body").style.color = event.target.value
+    setCookie("color", event.target.value, 30)
+    console.log("cookie: " + getCookie("color"))
+})
+
+var color = getCookie("color")
+document.getElementById("customcolor").value = color
+document.getElementById("body").style.color = color
+if (getCookie("teachermode") == "true") {
+    TeacherMode = true
+}
+document.getElementById("teachermode").checked = TeacherMode
+
+const settingsButton = document.getElementById('settings-button');
+const settingsMenu = document.getElementById('settings-menu');
+const overlay = document.getElementById('overlay');
+
+settingsButton.addEventListener('click', () => {
+  settingsMenu.classList.toggle('open');
+  overlay.classList.toggle('open');
+});
+
+const closeButton = document.getElementById('close-button');
+
+closeButton.addEventListener('click', () => {
+  settingsMenu.classList.remove('open');
+    overlay.classList.remove('open');
+});
+
+document.addEventListener('click', (event) => {
+  if (!settingsMenu.contains(event.target) && event.target !== settingsButton) {
+    settingsMenu.classList.remove('open');
+      overlay.classList.remove('open');
+  }
+});
+
+document.getElementById("reset-settings").addEventListener("click", (event) => {
+document.getElementById("body").style.color = event.target.value
+    setCookie("color", event.target.value, 30)
+    TeacherMode = event.target.checked
+setCookie("teachermode", TeacherMode, 30)
     document.getElementById("timer").innerHTML = "Calculating..."
 })
