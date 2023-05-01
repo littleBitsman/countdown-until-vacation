@@ -7,30 +7,32 @@
     <title>countdown until vacation</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body id="body">
     <div id="settings-button">Settings</div>
-<div id="settings-menu">
-    <button id="close-button">Close</button>
-  <h2>Settings</h2>
-    <form id="settings">
-  <div class="setting">
-      <input type="checkbox" id="teachermode" name="teacher-mode" value="teacher">
-<label for="teachermode">Teacher Mode (doesn't count days only students are off)</label>
-  </div>
-    <div class="setting">
-    <input type="color" value="#000000" id="customcolor">
-        <label for="customcolor">Customize Color</label>
+    <div id="settings-menu">
+        <button id="close-button">Close</button>
+        <h2>Settings</h2>
+        <form id="settings">
+            <div class="setting">
+                <input type="checkbox" id="teachermode" name="teacher-mode" value="teacher">
+                <label for="teachermode">Teacher Mode (doesn't count days only students are off)</label>
+            </div>
+            <div class="setting">
+                <input type="color" value="#000000" id="customcolor">
+                <label for="customcolor">Customize Color</label>
+            </div>
+            <input id="reset-settings" type="reset">
+        </form>
     </div>
-        <input id="reset-settings" type="reset">
-    </form>
-</div>
-<div id="overlay"></div>
+    <div id="overlay"></div>
     <p id="beta-indicator">if you see this refresh</p>
     <h1 id="timer">Calculating...</h1>
     <h2>until summer vacation!</h2>
     <h3>Days are counted by number of <u><i>school days</i></u> remaining.</h3>
     <center>
         <p id="teacher-mode-box-label">Remaining Student Only Off Days: Calculating...</p>
+        <a href="https://github.com/littleBitsman/countdown-until-vacation">GitHub Repository</a>
         <br>
         <h2 id="heheheha"><b>DO NOT PRESS THIS UNDER ANY CIRCUMSTANCES</b></h2>
         <h3 id="appearOnPress-h3"></h3>
@@ -44,5 +46,7 @@
         <div id="video"></div>
     </center>
 </body>
-    <script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="script.js"></script>
+
 </html>

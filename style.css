@@ -18,7 +18,9 @@ html,
         p {
             font-size: 25px
         }
-        
+        a {
+            font-size: 25px;
+        }
         #rickroll:hover {
             background-color: black;
             color: rgb(255, 85, 85);

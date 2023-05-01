@@ -15,7 +15,7 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.1.3"
+const Version = "1.1.4"
 const BetaVersion = "1.2.0-SNAPSHOT"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
@@ -102,9 +102,9 @@ const x = setInterval(function() {
     const daysOffRemaining = CalculateDaysOffRemaining()
     var days = ((Math.floor(distance / (1000 * 60 * 60 * 24))));
     const weekends = Math.floor((days / 7) * 2)
-    
+
     days -= (weekends + daysOffRemaining)
-    
+
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -120,29 +120,29 @@ const x = setInterval(function() {
 }, TimerRefreshRate);
 
 function setCookie(cname, cvalue, exdays) {
-  const d = new Date();
-  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-  let expires = "expires="+d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 function getCookie(cname) {
-  let name = cname + "=";
-  let ca = document.cookie.split(';');
-  for(let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
     }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
+    return "";
 }
 
 document.getElementById("teachermode").addEventListener("change", (event) => {
     TeacherMode = event.target.checked
-setCookie("teachermode", TeacherMode, 30)
+    setCookie("teachermode", TeacherMode, 30)
     document.getElementById("timer").innerHTML = "Calculating..."
 })
 
@@ -151,7 +151,7 @@ document.getElementById("customcolor").addEventListener("change", (event) => {
         event.target.value = "#000000"
         alert("please dont set the color to white kthx")
     }
-document.getElementById("body").style.color = event.target.value
+    document.getElementById("body").style.color = event.target.value
     setCookie("color", event.target.value, 30)
     console.log("cookie: " + getCookie("color"))
 })
@@ -169,28 +169,28 @@ const settingsMenu = document.getElementById('settings-menu');
 const overlay = document.getElementById('overlay');
 
 settingsButton.addEventListener('click', () => {
-  settingsMenu.classList.toggle('open');
-  overlay.classList.toggle('open');
+    settingsMenu.classList.toggle('open');
+    overlay.classList.toggle('open');
 });
 
 const closeButton = document.getElementById('close-button');
 
 closeButton.addEventListener('click', () => {
-  settingsMenu.classList.remove('open');
+    settingsMenu.classList.remove('open');
     overlay.classList.remove('open');
 });
 
 document.addEventListener('click', (event) => {
-  if (!settingsMenu.contains(event.target) && event.target !== settingsButton) {
-    settingsMenu.classList.remove('open');
-      overlay.classList.remove('open');
-  }
+    if (!settingsMenu.contains(event.target) && event.target !== settingsButton) {
+        settingsMenu.classList.remove('open');
+        overlay.classList.remove('open');
+    }
 });
 
 document.getElementById("reset-settings").addEventListener("click", (event) => {
-document.getElementById("body").style.color = event.target.value
+    document.getElementById("body").style.color = event.target.value
     setCookie("color", event.target.value, 30)
     TeacherMode = event.target.checked
-setCookie("teachermode", TeacherMode, 30)
+    setCookie("teachermode", TeacherMode, 30)
     document.getElementById("timer").innerHTML = "Calculating..."
 })
