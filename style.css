@@ -100,3 +100,9 @@ html,
   opacity: 1;
   pointer-events: auto;
 }
+
+#reset-settings {
+    background-color: #528CFF;
+    padding: 5px;
+    color: #ffffff;
+}

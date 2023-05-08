@@ -2,12 +2,12 @@ const countDownDate = new Date("Jun 13, 2023 15:00:01").getTime();
 
 const offDays = [
     new Date("May 26, 2023"),
-    new Date("May 29, 2023"),
-    new Date("June 1, 2023")
+    new Date("May 29, 2023")
 ]
 
 const StudentOnlyOffDays = [
     new Date("Apr 21, 2023"),
+    new Date("June 1, 2023"),
     new Date("June 7, 2023")
 ]
 
@@ -15,7 +15,7 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.1.4"
+const Version = "1.1.5"
 const BetaVersion = "1.2.0-SNAPSHOT"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
