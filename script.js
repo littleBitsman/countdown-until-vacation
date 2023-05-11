@@ -1,5 +1,5 @@
 const countDownDate = new Date("Jun 13, 2023 15:00:01").getTime();
-
+const lol = "https://youtu.be/dQw4w9WgXcQ" //"https://youtu.be/-CbxUk8QX9M"
 const offDays = [
     new Date("May 26, 2023"),
     new Date("May 29, 2023")
@@ -15,8 +15,8 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.1.5"
-const BetaVersion = "1.2.0-SNAPSHOT"
+const Version = "1.2.0"
+const BetaVersion = "1.3.0-SNAPSHOT"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
 } else {
@@ -35,21 +35,23 @@ function load() {
     };
 }
 load()
-function heheheha() {
+
+function doVideo() {
     function onPlayerReady(event) {
         event.target.playVideo();
         setInterval(() => { event.target.playVideo(); }, 0.000000001)
     }
     //window.location.href = ""
-    document.getElementById("heheheha").innerHTML = "<b>I told you. You could have avoided this, but no. Enjoy.</b>"
+    document.getElementById("heheheha").innerHTML = "<b>I told you. You could have avoided this, but no. Enjoy.</b> <small>gottem</small>"
     document.getElementById("appearOnPress-h3").innerHTML = "oh and by the way, you cant pause it lol"
     document.getElementById("appearOnPress-h4").innerHTML = "if you manage to pause it for longer than 1 second you are legend"
     document.getElementById("appearOnPress-h5").innerHTML = "on mobile and tablet devices it doesnt autoplay :("
-    document.getElementById("heheheha").style.color = "#ff0000"
+    document.getElementById("funnystuff").style.color = "#ff0000"
+    const videoId = lol.replace("https://youtu.be/", "")
     new YT.Player('video', {
         height: '390',
         width: '640',
-        videoId: 'dQw4w9WgXcQ',
+        videoId: videoId,
         playerVars: {
             'playsinline': 1,
             'controls': 0
@@ -61,6 +63,17 @@ function heheheha() {
         allow: 'autoplay'
     });
 }
+
+
+function heheheha() {
+    document.getElementById("heheheha").innerHTML = "<b>haha theres nothing anymore!!</b>"
+    setTimeout(doVideo, 2000)
+}
+/*
+function heheheha() {
+    document.getElementById("lol").style.visibility = "show"
+}
+*/
 
 var tag = document.createElement('script');
 
