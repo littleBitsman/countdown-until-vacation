@@ -1,5 +1,7 @@
 # random countdown till school vacation
-https://littlebitsman.github.io/countdown-until-vacation/
+Main Site: https://littlebitsman.github.io/countdown-until-vacation/
+Source Code: https://replit.com/@littleBitsman/countdown-until-vacation
+Beta Version: https://countdown-until-vacation.littlebitsman.repl.co
 ## this is a thing for school lol
 _better explanation soon lol_
 
