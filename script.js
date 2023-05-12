@@ -67,6 +67,7 @@ function doVideo() {
 
 function heheheha() {
     document.getElementById("heheheha").innerHTML = "<b>haha theres nothing anymore!!</b>"
+    document.getElementById("rickroll").disabled = true
     setTimeout(doVideo, 2000)
 }
 /*
