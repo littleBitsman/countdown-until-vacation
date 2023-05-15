@@ -6,7 +6,6 @@ const offDays = [
 ]
 
 const StudentOnlyOffDays = [
-    new Date("Apr 21, 2023"),
     new Date("June 1, 2023"),
     new Date("June 7, 2023")
 ]
