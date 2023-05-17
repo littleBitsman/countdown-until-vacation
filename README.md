@@ -1,4 +1,5 @@
 # random countdown till school vacation
+[![Deploy to GitHub Pages](https://github.com/littleBitsman/countdown-until-vacation/actions/workflows/static.yml/badge.svg)](https://github.com/littleBitsman/countdown-until-vacation/actions/workflows/static.yml)
 Main Site: https://littlebitsman.github.io/countdown-until-vacation/ 
 
 Source Code: https://replit.com/@littleBitsman/countdown-until-vacation 
