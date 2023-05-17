@@ -106,3 +106,9 @@ html,
     padding: 5px;
     color: #ffffff;
 }
+#reload {
+    background-color: #528CFF;
+    padding: 5px;
+    color: #ffffff;
+    border-radius: 5px;
+}
