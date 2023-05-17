@@ -14,8 +14,8 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.3.1"
-const BetaVersion = "1.3.2-SNAPSHOT"
+const Version = "1.3.2"
+const BetaVersion = "1.3.3-SNAPSHOT"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
 } else {
@@ -43,7 +43,7 @@ function doVideo() {
     //window.location.href = ""
     document.getElementById("heheheha").innerHTML = "<b>I told you. You could have avoided this, but no. Enjoy.</b> <small>gottem</small>"
     document.getElementById("appearOnPress-h3").innerHTML = "oh and by the way, you cant pause it lol"
-    document.getElementById("appearOnPress-h4").innerHTML = "if you manage to pause it for longer than 1 second you are legend"
+    document.getElementById("appearOnPress-h4").innerHTML = "<strong>what have you done...</strong>"
     document.getElementById("appearOnPress-h5").innerHTML = "on mobile and tablet devices it doesnt autoplay :("
     document.getElementById("funnystuff").style.color = "#ff0000"
     const videoId = lol.replace("https://youtu.be/", "")
