@@ -14,8 +14,8 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.3.2"
-const BetaVersion = "1.3.3-SNAPSHOT"
+const Version = "1.3.3"
+const BetaVersion = "1.3.4-SNAPSHOT"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
 } else {
@@ -172,6 +172,13 @@ document.getElementById("customcolor").addEventListener("change", (event) => {
     setCookie("color", event.target.value, 30)
     console.log("cookie: " + getCookie("color"))
 })
+document.getElementById("font-customization-menu").addEventListener("change", () => {
+    document.getElementById('body').style.fontFamily = document.getElementById("font-customization-menu").value
+    setCookie("font", document.getElementById("font-customization-menu").value, 30)
+})
+var font = getCookie("font")
+document.getElementById("font-customization-menu").value = font == "" ? "sans-serif" : font
+document.getElementById('body').style.fontFamily = document.getElementById("font-customization-menu").value
 
 var color = getCookie("color")
 document.getElementById("customcolor").value = color
