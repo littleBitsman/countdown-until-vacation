@@ -35,7 +35,7 @@ function load() {
 }
 load()
 
-function doVideo() {
+function doVideo(unlucky) {
     function onPlayerReady(event) {
         event.target.playVideo();
         setInterval(() => { event.target.playVideo(); }, 0.000000001)
@@ -44,6 +44,9 @@ function doVideo() {
     document.getElementById("heheheha").innerHTML = "<b>I told you. You could have avoided this, but no. Enjoy.</b> <small>gottem</small>"
     document.getElementById("appearOnPress-h3").innerHTML = "oh and by the way, you cant pause it lol"
     document.getElementById("appearOnPress-h4").innerHTML = "<strong>what have you done...</strong>"
+    if (unlucky == true) {
+        document.getElementById("appearOnPress-h4").innerHTML += " also you got really unlucky 5% chance the rickroll happens when its not the last school day L bozo"
+    }
     document.getElementById("appearOnPress-h5").innerHTML = "on mobile and tablet devices it doesnt autoplay :("
     document.getElementById("funnystuff").style.color = "#ff0000"
     const videoId = lol.replace("https://youtu.be/", "")
@@ -68,10 +71,13 @@ function heheheha() {
     document.getElementById("heheheha").innerHTML = "<b>haha theres nothing anymore!!</b>"
     document.getElementById("rickroll").disabled = true
     document.getElementById("lol").style.visibility = "visible"
-    setTimeout(function() {
+    const thingy = Math.floor(Math.random() * 20)
+    if (thingy == 1 || ((countDownDate - new Date()) <= 25200000)) {
+        setTimeout(function() {
         document.getElementById("lol").style.visibility = "hidden"
-        doVideo()
+        doVideo((thingy == 1 && !((countDownDate - new Date()) <= 25200000)))
     }, 5000)
+    }
 }
 /*
 function heheheha() {
@@ -132,7 +138,7 @@ const x = setInterval(function() {
     if (distance < 0) {
         clearInterval(x);
         document.getElementById("timer").innerHTML = "SUMMER VACATION!!!!";
-        heheheha()
+        heheheha(true)
     }
 }, TimerRefreshRate);
 
