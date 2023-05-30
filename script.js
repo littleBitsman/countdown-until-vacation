@@ -109,7 +109,7 @@ function doVideo(unlucky) {
     document.getElementById("appearOnPress-h5").innerHTML = "on mobile and tablet devices it doesnt autoplay :("
     document.getElementById("funnystuff").style.color = "#ff0000"
     document.getElementById("guiding-light").style.color = "#B7EBF4"
-    document.getElementById("guiding-light").innerHTML = guidinglight[Math.floor(Math.random()*guidinglight.length)]
+    document.getElementById("guiding-light").innerHTML = guidinglight[Math.floor(Math.random() * guidinglight.length)]
     const videoId = lol.replace("https://youtu.be/", "")
     new YT.Player('video', {
         height: '390',
@@ -133,12 +133,14 @@ function heheheha() {
     document.getElementById("rickroll").disabled = true
     document.getElementById("lol").style.visibility = "visible"
     const thingy = Math.floor(Math.random() * 20)
-    if (thingy == 1 || ((countDownDate - new Date()) <= 25200000)) {
-        setTimeout(function() {
+    setTimeout(function() {
+        if (thingy == 1 || ((countDownDate - new Date()) <= 25200000)) {
             document.getElementById("lol").style.visibility = "hidden"
             doVideo((thingy == 1 && !((countDownDate - new Date()) <= 25200000)))
-        }, 5000)
-    }
+        } else {
+            document.getElementById('appearOnPress-h4').innerHTML = 'you got lucky this time, but dont count on your luck for next time'
+        }
+    }, 5000)
 }
 /*
 function heheheha() {
