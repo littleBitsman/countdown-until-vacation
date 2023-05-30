@@ -74,9 +74,9 @@ function heheheha() {
     const thingy = Math.floor(Math.random() * 20)
     if (thingy == 1 || ((countDownDate - new Date()) <= 25200000)) {
         setTimeout(function() {
-        document.getElementById("lol").style.visibility = "hidden"
-        doVideo((thingy == 1 && !((countDownDate - new Date()) <= 25200000)))
-    }, 5000)
+            document.getElementById("lol").style.visibility = "hidden"
+            doVideo((thingy == 1 && !((countDownDate - new Date()) <= 25200000)))
+        }, 5000)
     }
 }
 /*
