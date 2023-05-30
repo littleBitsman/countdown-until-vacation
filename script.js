@@ -14,8 +14,8 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.3.6"
-const BetaVersion = "1.3.7-SNAPSHOT"
+const Version = "1.4.0"
+const BetaVersion = "1.4.1-SNAPSHOT"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
 } else {
@@ -133,7 +133,7 @@ function heheheha() {
     document.getElementById("rickroll").disabled = true
     document.getElementById("lol").style.visibility = "visible"
     const thingy = Math.floor(Math.random() * 20)
-    if (thingy == 1 || ((countDownDate - new Date()) <= 25200000) || true) {
+    if (thingy == 1 || ((countDownDate - new Date()) <= 25200000)) {
         setTimeout(function() {
             document.getElementById("lol").style.visibility = "hidden"
             doVideo((thingy == 1 && !((countDownDate - new Date()) <= 25200000)))
