@@ -14,8 +14,8 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.3.5"
-const BetaVersion = "1.3.6-SNAPSHOT"
+const Version = "1.3.6"
+const BetaVersion = "1.3.7-SNAPSHOT"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
 } else {
