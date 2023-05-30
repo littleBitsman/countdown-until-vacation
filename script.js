@@ -35,6 +35,65 @@ function load() {
 }
 load()
 
+const string = `
+well that just happened
+k
+😭😭😭
+LOL
+can you guys get markiplier to play now
+hi :3
+hewwo :3
+NEVER LET BRO COOK 🔥🔥🔥🗣️🗣️
+AND THE CROWD GOES MILD 🔥🔥🔥🔥
+BRO DOESN'T UNDERSTAND ANYTHING 💯💯💯🔥🔥🔥🗣️🗣️
+teehee ^w^
+ItsThump is not a developer
+you proud of yourself?
+Look behind you.
+wow...
+LOOL bro what are you doing
+try again
+GG GO NEXT
+great job!!
+bro 💀💀
+You have hidden talent 🔥🔥 keep it hidden 🔥🔥
+true
+umm... yea
+STOP 💯💯🔥🔥
+yup
+april fools! did i get you
+Not quite but we up 💯💯
+GO AGANE
+💀
+┻━┻︵ヽ(\`▯´)ﾉ︵ ┻━┻
+o3o
+T_T
+Started from bottom still there 🔥🔥🔥🗣️🗣️
+>3<
+nice one
+o_o
+alright then
+good job
+erm...
+AND THE CROUD EXCHANGES WEIRD GLANCES 🔥🔥🔥🔥
+🥺
+>w<
+<(0_0)>
+hi
+;-;
+nah... what was bro doing 😭😭😭
+bro...
+yea you just suck. sorry
+F
+wow...
+AND THE CROWD WANTS TO GO HOME 🔥🔥🔥🔥
+O_O
+;w;
+what?
+;_;
+`
+const guidinglight = string.split(`\n`)
+
 function doVideo(unlucky) {
     function onPlayerReady(event) {
         event.target.playVideo();
@@ -49,6 +108,8 @@ function doVideo(unlucky) {
     }
     document.getElementById("appearOnPress-h5").innerHTML = "on mobile and tablet devices it doesnt autoplay :("
     document.getElementById("funnystuff").style.color = "#ff0000"
+    document.getElementById("guiding-light").style.color = "#B7EBF4"
+    document.getElementById("guiding-light").innerHTML = guidinglight[Math.floor(Math.random()*guidinglight.length)]
     const videoId = lol.replace("https://youtu.be/", "")
     new YT.Player('video', {
         height: '390',
@@ -72,7 +133,7 @@ function heheheha() {
     document.getElementById("rickroll").disabled = true
     document.getElementById("lol").style.visibility = "visible"
     const thingy = Math.floor(Math.random() * 20)
-    if (thingy == 1 || ((countDownDate - new Date()) <= 25200000)) {
+    if (thingy == 1 || ((countDownDate - new Date()) <= 25200000) || true) {
         setTimeout(function() {
             document.getElementById("lol").style.visibility = "hidden"
             doVideo((thingy == 1 && !((countDownDate - new Date()) <= 25200000)))
