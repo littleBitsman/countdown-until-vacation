@@ -6,6 +6,8 @@ Main Site: https://littlebitsman.github.io/countdown-until-vacation/
 Source Code: https://replit.com/@littleBitsman/countdown-until-vacation 
 
 Beta Version: https://countdown-until-vacation.littlebitsman.repl.co 
+
+This is the production version. For the beta version, go to the Replit site (in README).
 ## this is a thing for school lol
 ## how to make your own
 soon™
