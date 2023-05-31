@@ -14,8 +14,8 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.4.1"
-const BetaVersion = "1.4.2-SNAPSHOT"
+const Version = "1.4.2"
+const BetaVersion = "1.4.3-SNAPSHOT"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
 } else {
@@ -281,4 +281,6 @@ document.getElementById("reset-settings").addEventListener("click", (event) => {
     TeacherMode = event.target.checked
     setCookie("teachermode", TeacherMode, 30)
     document.getElementById("timer").innerHTML = "Calculating..."
+    setCookie("font", "sans-serif", 30)
+    document.getElementById('body').style.fontFamily = 'sans-serif'
 })
