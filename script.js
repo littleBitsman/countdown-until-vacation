@@ -171,25 +171,20 @@ function CalculateDaysOffRemaining() {
             daysOffRemaining++
         }
     }
-
     if (!TeacherMode) {
         daysOffRemaining += CalculateStudentOnlyOffDays()
     }
-
     return daysOffRemaining
 }
 
 const x = setInterval(function() {
-    const now = new Date().getTime();
-
+    const now = new Date().getTime()
     const distance = countDownDate - now;
-
     // Calculate any days off from school
     const daysOffRemaining = CalculateDaysOffRemaining()
-    var days = ((Math.floor(distance / (1000 * 60 * 60 * 24))));
-    const weekends = Math.floor((days / 7) * 2)
-
-    days -= (weekends + daysOffRemaining)
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24)) - daysOffRemaining;
+    const weekends = Math.ceil((days / 7) * 2)
+    days -= weekends
 
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
