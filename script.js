@@ -108,7 +108,7 @@ function doVideo(unlucky) {
     }
     document.getElementById("appearOnPress-h5").innerHTML = "on mobile and tablet devices it doesnt autoplay :("
     document.getElementById("funnystuff").style.color = "#ff0000"
-    document.getElementById("guiding-light").style.color = "#B7EBF4"
+    document.getElementById("guiding-light").style.color = "#77ABB4"
     document.getElementById("guiding-light").innerHTML = guidinglight[Math.floor(Math.random() * guidinglight.length)]
     const videoId = lol.replace("https://youtu.be/", "")
     new YT.Player('video', {
