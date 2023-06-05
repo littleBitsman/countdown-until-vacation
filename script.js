@@ -182,9 +182,9 @@ const x = setInterval(function() {
     const distance = countDownDate - now;
     // Calculate any days off from school
     const daysOffRemaining = CalculateDaysOffRemaining()
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24)) - daysOffRemaining;
-    const weekends = Math.ceil((days / 7) * 2)
-    days -= weekends
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const weekends = Math.floor((days / 7) * 2)
+    days -= (weekends + daysOffRemaining)
 
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
