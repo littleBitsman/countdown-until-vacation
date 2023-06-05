@@ -5,10 +5,7 @@ const offDays = [
     new Date("May 29, 2023")
 ]
 
-const StudentOnlyOffDays = [
-    new Date("June 1, 2023"),
-    new Date("June 7, 2023")
-]
+const StudentOnlyOffDays = []
 
 var TeacherMode = false
 
