@@ -11,7 +11,7 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.4.5"
+const Version = "1.4.6"
 const BetaVersion = "1.5.0-SNAPSHOT"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
@@ -180,7 +180,7 @@ const x = setInterval(function() {
     // Calculate any days off from school
     const daysOffRemaining = CalculateDaysOffRemaining()
     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const weekends = Math.floor((days / 7) * 2)
+    const weekends = Math.ceil((days / 7) * 2)
     days -= (weekends + daysOffRemaining)
 
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
