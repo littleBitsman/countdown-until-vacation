@@ -180,7 +180,7 @@ const x = setInterval(function() {
     // Calculate any days off from school
     const daysOffRemaining = CalculateDaysOffRemaining()
     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const weekends = Math.ceil((days / 7) * 2)
+    const weekends = Math.floor((days / 7) * 2)
     days -= (weekends + daysOffRemaining)
 
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
