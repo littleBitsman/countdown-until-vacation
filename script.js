@@ -1,4 +1,4 @@
-const countDownDate = new Date("Jun 13, 2023 15:00:01").getTime();
+var countDownDate = new Date("Jun 13, 2023 15:00:01").getTime();
 const lol = "https://youtu.be/dQw4w9WgXcQ" //"https://youtu.be/-CbxUk8QX9M"
 const offDays = [
     new Date("May 26, 2023"),
@@ -197,9 +197,13 @@ const x = setInterval(function() {
     }
     document.getElementById("teacher-mode-box-label").innerHTML = "Remaining Student Only Off Days: " + CalculateStudentOnlyOffDays()
     if (distance < 0) {
+        doVideo(false)
         clearInterval(x);
         document.getElementById("timer").innerHTML = "SUMMER VACATION!!!!";
-        heheheha(true)
+        /*
+        countDownDate = new Date("Sep 1, 2023 8:00:00").getTime()
+        document.getElementById("countdown-until").innerHTML = "until school starts!"
+        */
     }
 }, TimerRefreshRate);
 
