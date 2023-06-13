@@ -186,9 +186,15 @@ const x = setInterval(function() {
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    document.getElementById("timer").innerHTML = days + "d " + hours + "h "
-        + minutes + "m " + seconds + "s ";
+    if (minutes == 0 && hours == 0 && days == 0) {
+        document.getElementById("timer").innerHTML = seconds + "s"
+    } else if (hours == 0 && days == 0) {
+        document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s"
+    } else if (days == 0) {
+        document.getElementById("timer").innerHTML = hours + "h " + minutes + "m " + seconds + "s";
+    } else {
+        document.getElementById("timer").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s"
+    }
     document.getElementById("teacher-mode-box-label").innerHTML = "Remaining Student Only Off Days: " + CalculateStudentOnlyOffDays()
     if (distance < 0) {
         clearInterval(x);
