@@ -1,4 +1,4 @@
-var countDownDate = new Date("Jun 13, 2023 15:00:01").getTime();
+var countDownDate = new Date("Jun 13, 2024 15:00:01").getTime();
 const lol = "https://youtu.be/dQw4w9WgXcQ" 
 //const lol = "https://youtu.be/-CbxUk8QX9M"
 const offDays = [
@@ -12,7 +12,7 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.4.7"
+const Version = "1.4.8"
 const BetaVersion = "1.5.0-SNAPSHOT"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
