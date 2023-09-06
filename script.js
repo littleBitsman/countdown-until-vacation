@@ -246,6 +246,30 @@ document.getElementById("font-customization-menu").addEventListener("change", ()
     document.getElementById('body').style.fontFamily = document.getElementById("font-customization-menu").value
     setCookie("font", document.getElementById("font-customization-menu").value, 30)
 })
+
+const periods = [
+    "8:43",
+    "9:31",
+    "10:18",
+    "11:05",
+    "11:52",
+    "12:39",
+    "13:26",
+    "14:13",
+    "15:00"
+]
+document.getElementById("period-setting-menu").addEventListener("change", () => {
+    if (document.getElementById("period-setting-menu").value == 'none') {
+        countDownDate = new Date(`Jun 13, 2024 15:00:01`).getTime()
+        document.getElementById("countdown-until").textContent = "until summer vacation!"
+        return
+    }
+    const number = Number.parseInt(document.getElementById("period-setting-menu").value)
+    countDownDate = new Date(`Jun 13, 2024 ${periods[number - 1]}:01`).getTime()
+
+    document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
+})
+
 var font = getCookie("font")
 document.getElementById("font-customization-menu").value = font == "" ? "sans-serif" : font
 document.getElementById('body').style.fontFamily = document.getElementById("font-customization-menu").value
