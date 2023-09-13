@@ -1,10 +1,7 @@
 var countDownDate = new Date("Jun 13, 2024 15:00:01").getTime();
 const lol = "https://youtu.be/dQw4w9WgXcQ" 
 //const lol = "https://youtu.be/-CbxUk8QX9M"
-const offDays = [
-    new Date("May 26, 2023"),
-    new Date("May 29, 2023")
-]
+const offDays = []
 
 const lazyOffDays = [
     "Sep 25, 2023",
@@ -36,11 +33,9 @@ const lazyOffDays = [
     "Apr 25, 2024",
     "Apr 26, 2024",
     "Apr 29, 2024",
-    "Apr 30, 2024"
+    "Apr 30, 2024",
     "May 27, 2024"
 ]
-
-lazyOffDays.forEach((val) => offDays.push(new Date(val)))
 
 const StudentOnlyOffDays = []
 
@@ -202,6 +197,12 @@ function CalculateDaysOffRemaining() {
     var daysOffRemaining = 0
     for (let index = 0; index < offDays.length; index++) {
         if (offDays[index] >= now && offDays[index] <= countDownDate) {
+            daysOffRemaining++
+        }
+    }
+    for (let index = 0; index < lazyOffDays.length; index++) {
+        const a = new Date(lazyOffDays[index])
+        if (a >= now && a <= countDownDate) {
             daysOffRemaining++
         }
     }
