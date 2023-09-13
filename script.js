@@ -6,6 +6,42 @@ const offDays = [
     new Date("May 29, 2023")
 ]
 
+const lazyOffDays = [
+    "Sep 25, 2023",
+    "Oct 9, 2023",
+    "Nov 6, 2023",
+    "Nov 7, 2023",
+    "Nov 10, 2023",
+    "Nov 23, 2023",
+    "Nov 24, 2023",
+    "Dec 25, 2023",
+    "Dec 26, 2023",
+    "Dec 27, 2023",
+    "Dec 28, 2023",
+    "Dec 29, 2023",
+    "Jan 1, 2024", 
+    "Jan 15, 2024",
+    "Feb 19, 2024",
+    "Feb 20, 2024",
+    "Feb 21, 2024",
+    "Feb 22, 2024",
+    "Feb 23, 2024",
+    "Mar 28, 2024", 
+    "Mar 29, 2024", 
+    "Apr 1, 2024",
+    "Apr 10, 2024", 
+    "Apr 22, 2024", 
+    "Apr 23, 2024",
+    "Apr 24, 2024",
+    "Apr 25, 2024",
+    "Apr 26, 2024",
+    "Apr 29, 2024",
+    "Apr 30, 2024"
+    "May 27, 2024"
+]
+
+lazyOffDays.forEach((val) => offDays.push(new Date(val)))
+
 const StudentOnlyOffDays = []
 
 var TeacherMode = false
