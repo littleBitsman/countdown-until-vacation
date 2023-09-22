@@ -43,8 +43,8 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.8.0"
-const BetaVersion = "1.8.0"
+const Version = "1.9.0"
+const BetaVersion = "1.9.0"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
 } else {
@@ -212,13 +212,14 @@ function CalculateDaysOffRemaining() {
     return daysOffRemaining
 }
 
+var weekendsEnabled = false
 const x = setInterval(function() {
     const now = new Date().getTime()
     const distance = countDownDate - now;
     // Calculate any days off from school
     const daysOffRemaining = CalculateDaysOffRemaining()
     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const weekends = Math.floor((days / 7) * 2)
+    const weekends = weekendsEnabled ? 0 : Math.floor((days / 7) * 2)
     days -= (weekends + daysOffRemaining)
 
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -264,6 +265,10 @@ function getCookie(cname) {
     }
     return "";
 }
+
+document.getElementById("weekends").addEventListener("change", (ev) => {
+    weekendsEnabled = ev.target.checked
+})
 
 document.getElementById("teachermode").addEventListener("change", (event) => {
     TeacherMode = event.target.checked

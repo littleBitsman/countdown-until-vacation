@@ -56,6 +56,10 @@
                 <input type="checkbox" id="period-end-toggle" disabled="true">
                 <label for="period-end-toggle">Count until end of period</label>
             </div>
+            <div class="setting">
+                <input type="checkbox" id="weekends">
+                <label for="weekends">Count Weekends</label>
+            </div>
             <input id="reset-settings" type="reset">
             <div class="setting">
                 <button type="button" onclick="location.reload()" id="reload">Reload Page</button>
@@ -66,7 +70,7 @@
     <p id="beta-indicator">if you see this refresh</p>
     <h1 id="timer">Calculating...</h1>
     <h2 id="countdown-until">until summer vacation!</h2>
-    <h3>Days are counted by number of <u><i>school days</i></u> remaining.</h3>
+    <h3>Days are counted by number of <u><i>school days</i></u> remaining.<br><small>If you have enabled counting weekends in the Settings, weekends are counted as well.</small></h3>
     <center>
         <p id="teacher-mode-box-label">Remaining Student Only Off Days: Calculating...</p>
         <a href="https://github.com/littleBitsman/countdown-until-vacation">GitHub Repository</a>
