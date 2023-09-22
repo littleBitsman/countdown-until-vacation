@@ -43,8 +43,8 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.6.0"
-const BetaVersion = "1.6.0"
+const Version = "1.7.0"
+const BetaVersion = "1.7.0"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
 } else {
@@ -319,9 +319,11 @@ document.getElementById("period-setting-menu").addEventListener("change", () => 
         date.setMinutes(current.getMinutes())
         date.setSeconds(current.getSeconds())
         countDownDate = date.getTime()
+        document.getElementById("countdown-until").textContent = "until class is over! (Period " + number.toString() + ")"
     } else {
         const number = Number.parseInt(document.getElementById("period-setting-menu").value)
         countDownDate = new Date(`Jun 13, 2024 ${periods[number - 1]}:01`).getTime()
+        document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
     }
 })
 
@@ -335,9 +337,12 @@ periodEndToggle.addEventListener("change", () => {
         date.setMinutes(current.getMinutes())
         date.setSeconds(current.getSeconds())
         countDownDate = date.getTime()
+        const number = Number.parseInt(document.getElementById("period-setting-menu").value)
+        document.getElementById("countdown-until").textContent = "until class is over! (Period " + number.toString() + ")"
     } else {
         const number = Number.parseInt(document.getElementById("period-setting-menu").value)
         countDownDate = new Date(`Jun 13, 2024 ${periods[number - 1]}:01`).getTime()
+        document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
     }
 })
 
