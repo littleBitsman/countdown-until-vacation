@@ -43,8 +43,8 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.7.0"
-const BetaVersion = "1.7.0"
+const Version = "1.8.0"
+const BetaVersion = "1.8.0"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
 } else {
@@ -236,10 +236,11 @@ const x = setInterval(function() {
     document.getElementById("teacher-mode-box-label").innerHTML = "Remaining Student Only Off Days: " + CalculateStudentOnlyOffDays()
     if (distance < 0) {
         doVideo(false)
-        clearInterval(x);
-        document.getElementById("timer").innerHTML = "SUMMER VACATION!!!!";
+        document.getElementById("timer").innerHTML = document.getElementById("period-end-toggle") ? "CLASS IS OVER!!!" : "SUMMER VACATION!!!!";
         countDownDate = new Date("Sep 1, 2023 8:00:00").getTime()
-        document.getElementById("countdown-until").innerHTML = "until school starts!"
+        clearInterval(x)
+        document.getElementById("countdown-until").innerHTML = ""
+        document.getElementById("settings-broken").style.visibility = ""
     }
 }, TimerRefreshRate);
 
