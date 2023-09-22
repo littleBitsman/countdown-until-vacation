@@ -43,8 +43,8 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.5.0"
-const BetaVersion = "1.5.0-SNAPSHOT"
+const Version = "1.6.0"
+const BetaVersion = "1.6.0"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
 } else {
@@ -295,16 +295,50 @@ const periods = [
     "14:13",
     "15:00"
 ]
+
+const periodEndToggle = document.getElementById("period-end-toggle")
+
 document.getElementById("period-setting-menu").addEventListener("change", () => {
     if (document.getElementById("period-setting-menu").value == 'none') {
         countDownDate = new Date(`Jun 13, 2024 15:00:01`).getTime()
         document.getElementById("countdown-until").textContent = "until summer vacation!"
-        return
-    }
-    const number = Number.parseInt(document.getElementById("period-setting-menu").value)
-    countDownDate = new Date(`Jun 13, 2024 ${periods[number - 1]}:01`).getTime()
+        periodEndToggle.disabled = true
+        periodEndToggle.checked = false
+    } else {
+        const number = Number.parseInt(document.getElementById("period-setting-menu").value)
+        countDownDate = new Date(`Jun 13, 2024 ${periods[number - 1]}:01`).getTime()
 
-    document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
+        document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
+        periodEndToggle.disabled = false
+    }
+    if (periodEndToggle.checked) {
+        const date = new Date()
+        const current = new Date()
+        current.setTime(countDownDate)
+        date.setHours(current.getHours())
+        date.setMinutes(current.getMinutes())
+        date.setSeconds(current.getSeconds())
+        countDownDate = date.getTime()
+    } else {
+        const number = Number.parseInt(document.getElementById("period-setting-menu").value)
+        countDownDate = new Date(`Jun 13, 2024 ${periods[number - 1]}:01`).getTime()
+    }
+})
+
+
+periodEndToggle.addEventListener("change", () => {
+    if (periodEndToggle.checked) {
+        const date = new Date()
+        const current = new Date()
+        current.setTime(countDownDate)
+        date.setHours(current.getHours())
+        date.setMinutes(current.getMinutes())
+        date.setSeconds(current.getSeconds())
+        countDownDate = date.getTime()
+    } else {
+        const number = Number.parseInt(document.getElementById("period-setting-menu").value)
+        countDownDate = new Date(`Jun 13, 2024 ${periods[number - 1]}:01`).getTime()
+    }
 })
 
 var font = getCookie("font")
