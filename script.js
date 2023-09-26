@@ -6,8 +6,6 @@ const offDays = []
 const lazyOffDays = [
     "Sep 25, 2023",
     "Oct 9, 2023",
-    "Nov 6, 2023",
-    "Nov 7, 2023",
     "Nov 10, 2023",
     "Nov 23, 2023",
     "Nov 24, 2023",
@@ -25,8 +23,7 @@ const lazyOffDays = [
     "Feb 23, 2024",
     "Mar 28, 2024", 
     "Mar 29, 2024", 
-    "Apr 1, 2024",
-    "Apr 10, 2024", 
+    "Apr 1, 2024", 
     "Apr 22, 2024", 
     "Apr 23, 2024",
     "Apr 24, 2024",
@@ -37,7 +34,11 @@ const lazyOffDays = [
     "May 27, 2024"
 ]
 
-const StudentOnlyOffDays = []
+const StudentOnlyOffDays = [
+    "Nov 6, 2023",
+    "Nov 7, 2023",
+    "Apr 10, 2024"
+]
 
 var TeacherMode = false
 
@@ -186,7 +187,8 @@ function CalculateStudentOnlyOffDays() {
     const now = new Date()
     var daysOffRemaining = 0
     for (let index = 0; index < StudentOnlyOffDays.length; index++) {
-        if (StudentOnlyOffDays[index] >= now && StudentOnlyOffDays[index] <= countDownDate) {
+        const that = new Date(StudentOnlyOffDays[index])
+        if (that >= now && that <= countDownDate) {
             daysOffRemaining++
         }
     }
