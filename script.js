@@ -44,8 +44,8 @@ var TeacherMode = false
 
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.10.0"
-const BetaVersion = "1.10.0"
+const Version = "1.11.0"
+const BetaVersion = "1.11.0"
 if (IsBetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
 } else {
@@ -270,6 +270,7 @@ function getCookie(cname) {
 
 document.getElementById("weekends").addEventListener("change", (ev) => {
     weekendsEnabled = ev.target.checked
+    document.getElementById("period-end-toggle").disabled = ev.target.checked || document.getElementById("period-setting-menu").value == '0'
 })
 
 document.getElementById("teachermode").addEventListener("change", (event) => {
@@ -353,6 +354,7 @@ periodEndToggle.addEventListener("change", () => {
         countDownDate = new Date(`Jun 13, 2024 ${periods[number]}:01`).getTime()
         document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
     }
+    document.getElementById("weekends").disabled = periodEndToggle.checked
 })
 
 var font = getCookie("font")
