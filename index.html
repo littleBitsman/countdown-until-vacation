@@ -9,7 +9,7 @@
     <script src="thing.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lato&family=Overpass&family=Poppins&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lato&family=Overpass&family=Poppins&family=Roboto&family=Oswald&display=swap" rel="stylesheet">
 </head>
 
 <body id="body">
@@ -17,6 +17,7 @@
     <div id="settings-menu">
         <button id="close-button">Close</button>
         <h2>Settings</h2>
+        <h4 style="visibility: hidden" id="settings-broken">You will have to refresh to change any settings, otherwise they may not work as intended.</h4>
         <form id="settings">
             <div class="setting">
                 <input type="checkbox" id="teachermode" name="teacher-mode" value="teacher">
@@ -34,7 +35,33 @@
                     <option value="Poppins" style="font-family: Poppins;">Poppins</option>
                     <option value="Overpass" style="font-family: Overpass;">Highway</option>
                     <option value="Lato" style="font-family: Lato;">Lato</option>
+                    <option value="Roboto" style="font-family: Roboto;">Roboto</option>
+                    <option value="Oswald" style="font-family: Oswald;">Oswald</option>
+                </select
                 </select>
+            </div>
+            <div class="setting" id="period-setting">
+                <label for="period-setting">Period: </label>
+                <select id="period-setting-menu">
+                    <option value="0">None (Period 9)</option>
+                    <option value="1">Period 1 (8:00-8:43 AM)</option>
+                    <option value="2">Period 2 (8:47-9:31 AM)</option>
+                    <option value="3">Period 3 (9:35-10:18 AM)</option>
+                    <option value="4">Period 4 (10:22-11:05 AM)</option>
+                    <option value="5">Period 5 (11:09-11:52 AM)</option>
+                    <option value="6">Period 6 (11:56 AM-12:39 PM)</option>
+                    <option value="7">Period 7 (12:43-1:26 PM)</option>
+                    <option value="8">Period 8 (1:30-2:13 PM)</option>
+                    <option value="9">Period 9 (2:17-3:00 PM)</option>
+                </select>
+            </div>
+            <div class="setting">
+                <input type="checkbox" id="period-end-toggle" disabled="true">
+                <label for="period-end-toggle">Count until end of period</label>
+            </div>
+            <div class="setting">
+                <input type="checkbox" id="weekends">
+                <label for="weekends">Count Weekends</label>
             </div>
             <input id="reset-settings" type="reset">
             <div class="setting">
@@ -45,8 +72,8 @@
     <div id="overlay"></div>
     <p id="beta-indicator">if you see this refresh</p>
     <h1 id="timer">Calculating...</h1>
-    <h2>until summer vacation!</h2>
-    <h3>Days are counted by number of <u><i>school days</i></u> remaining.</h3>
+    <h2 id="countdown-until">until summer vacation!</h2>
+    <h3>Days are counted by number of <u><i>school days</i></u> remaining.<br><small>If you have enabled counting weekends in the Settings, weekends are counted as well.</small></h3>
     <center>
         <p id="teacher-mode-box-label">Remaining Student Only Off Days: Calculating...</p>
         <a href="https://github.com/littleBitsman/countdown-until-vacation">GitHub Repository</a>

@@ -1,19 +1,52 @@
-const countDownDate = new Date("Jun 13, 2023 15:00:01").getTime();
-const lol = "https://youtu.be/dQw4w9WgXcQ" //"https://youtu.be/-CbxUk8QX9M"
-const offDays = [
-    new Date("May 26, 2023"),
-    new Date("May 29, 2023")
+var countDownDate = new Date("Jun 13, 2024 15:00:01").getTime();
+const lol = "https://youtu.be/dQw4w9WgXcQ"
+//const lol = "https://youtu.be/-CbxUk8QX9M"
+const offDays = []
+
+const lazyOffDays = [
+    "Sep 25, 2023",
+    "Oct 9, 2023",
+    "Nov 10, 2023",
+    "Nov 23, 2023",
+    "Nov 24, 2023",
+    "Dec 25, 2023",
+    "Dec 26, 2023",
+    "Dec 27, 2023",
+    "Dec 28, 2023",
+    "Dec 29, 2023",
+    "Jan 1, 2024",
+    "Jan 15, 2024",
+    "Feb 19, 2024",
+    "Feb 20, 2024",
+    "Feb 21, 2024",
+    "Feb 22, 2024",
+    "Feb 23, 2024",
+    "Mar 28, 2024",
+    "Mar 29, 2024",
+    "Apr 1, 2024",
+    "Apr 22, 2024",
+    "Apr 23, 2024",
+    "Apr 24, 2024",
+    "Apr 25, 2024",
+    "Apr 26, 2024",
+    "Apr 29, 2024",
+    "Apr 30, 2024",
+    "May 27, 2024"
 ]
 
-const StudentOnlyOffDays = []
+const StudentOnlyOffDays = [
+    "Nov 6, 2023",
+    "Nov 7, 2023",
+    "Apr 10, 2024"
+]
 
 var TeacherMode = false
 
+const Version = "1.11.0"
+const BetaVersion = "1.11.0"
 const IsBetaVersion = !(window.location.href.includes("github"))
 
-const Version = "1.4.6"
-const BetaVersion = "1.5.0-SNAPSHOT"
-if (IsBetaVersion) {
+if (IsBetaVersion && Version != BetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
 } else {
     document.getElementById("beta-indicator").innerHTML = "Version " + Version
@@ -106,7 +139,7 @@ function doVideo(unlucky) {
     document.getElementById("appearOnPress-h5").innerHTML = "on mobile and tablet devices it doesnt autoplay :("
     document.getElementById("funnystuff").style.color = "#ff0000"
     document.getElementById("guiding-light").style.color = "#77ABB4"
-    document.getElementById("guiding-light").innerHTML = guidinglight[Math.floor(Math.random() * guidinglight.length)]
+    document.getElementById("guiding-light").innerHTML = "my honest reaction: " + guidinglight[Math.floor(Math.random() * guidinglight.length)]
     const videoId = lol.replace("https://youtu.be/", "")
     new YT.Player('video', {
         height: '390',
@@ -154,7 +187,8 @@ function CalculateStudentOnlyOffDays() {
     const now = new Date()
     var daysOffRemaining = 0
     for (let index = 0; index < StudentOnlyOffDays.length; index++) {
-        if (StudentOnlyOffDays[index] >= now && StudentOnlyOffDays[index] <= countDownDate) {
+        const that = new Date(StudentOnlyOffDays[index])
+        if (that >= now && that <= countDownDate) {
             daysOffRemaining++
         }
     }
@@ -168,32 +202,48 @@ function CalculateDaysOffRemaining() {
             daysOffRemaining++
         }
     }
+    for (let index = 0; index < lazyOffDays.length; index++) {
+        const a = new Date(lazyOffDays[index])
+        if (a >= now && a <= countDownDate) {
+            daysOffRemaining++
+        }
+    }
     if (!TeacherMode) {
         daysOffRemaining += CalculateStudentOnlyOffDays()
     }
     return daysOffRemaining
 }
 
+var weekendsEnabled = false
 const x = setInterval(function() {
     const now = new Date().getTime()
     const distance = countDownDate - now;
     // Calculate any days off from school
     const daysOffRemaining = CalculateDaysOffRemaining()
     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const weekends = Math.floor((days / 7) * 2)
+    const weekends = weekendsEnabled ? 0 : Math.floor((days / 7) * 2)
     days -= (weekends + daysOffRemaining)
 
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    document.getElementById("timer").innerHTML = days + "d " + hours + "h "
-        + minutes + "m " + seconds + "s ";
+    if (minutes == 0 && hours == 0 && days == 0) {
+        document.getElementById("timer").innerHTML = seconds + "s"
+    } else if (hours == 0 && days == 0) {
+        document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s"
+    } else if (days == 0) {
+        document.getElementById("timer").innerHTML = hours + "h " + minutes + "m " + seconds + "s";
+    } else {
+        document.getElementById("timer").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s"
+    }
     document.getElementById("teacher-mode-box-label").innerHTML = "Remaining Student Only Off Days: " + CalculateStudentOnlyOffDays()
     if (distance < 0) {
-        clearInterval(x);
-        document.getElementById("timer").innerHTML = "SUMMER VACATION!!!!";
-        heheheha(true)
+        doVideo(false)
+        document.getElementById("timer").innerHTML = document.getElementById("period-end-toggle") ? "CLASS IS OVER!!!" : "SUMMER VACATION!!!!";
+        countDownDate = new Date("Sep 1, 2023 8:00:00").getTime()
+        clearInterval(x)
+        document.getElementById("countdown-until").innerHTML = ""
+        document.getElementById("settings-broken").style.visibility = ""
     }
 }, TimerRefreshRate);
 
@@ -218,6 +268,11 @@ function getCookie(cname) {
     return "";
 }
 
+document.getElementById("weekends").addEventListener("change", (ev) => {
+    weekendsEnabled = ev.target.checked
+    document.getElementById("period-end-toggle").disabled = ev.target.checked || document.getElementById("period-setting-menu").value == '0'
+})
+
 document.getElementById("teachermode").addEventListener("change", (event) => {
     TeacherMode = event.target.checked
     setCookie("teachermode", TeacherMode, 30)
@@ -237,6 +292,71 @@ document.getElementById("font-customization-menu").addEventListener("change", ()
     document.getElementById('body').style.fontFamily = document.getElementById("font-customization-menu").value
     setCookie("font", document.getElementById("font-customization-menu").value, 30)
 })
+
+const periods = [
+    "15:00",
+    "8:43",
+    "9:31",
+    "10:18",
+    "11:05",
+    "11:52",
+    "12:39",
+    "13:26",
+    "14:13",
+    "15:00"
+]
+
+const periodEndToggle = document.getElementById("period-end-toggle")
+
+document.getElementById("period-setting-menu").addEventListener("change", () => {
+    if (document.getElementById("period-setting-menu").value == '0') {
+        countDownDate = new Date(`Jun 13, 2024 15:00:01`).getTime()
+        document.getElementById("countdown-until").textContent = "until summer vacation!"
+        periodEndToggle.disabled = true
+        periodEndToggle.checked = false
+    } else {
+        const number = Number.parseInt(document.getElementById("period-setting-menu").value)
+        countDownDate = new Date(`Jun 13, 2024 ${periods[number]}:01`).getTime()
+
+        document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
+        periodEndToggle.disabled = false
+    }
+    if (periodEndToggle.checked) {
+        const date = new Date()
+        const current = new Date()
+        current.setTime(countDownDate)
+        date.setHours(current.getHours())
+        date.setMinutes(current.getMinutes())
+        date.setSeconds(current.getSeconds())
+        countDownDate = date.getTime()
+        document.getElementById("countdown-until").textContent = "until class is over! (Period " + number.toString() + ")"
+    } else {
+        const number = Number.parseInt(document.getElementById("period-setting-menu").value)
+        countDownDate = new Date(`Jun 13, 2024 ${periods[number]}:01`).getTime()
+        document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
+    }
+})
+
+
+periodEndToggle.addEventListener("change", () => {
+    if (periodEndToggle.checked) {
+        const date = new Date()
+        const current = new Date()
+        current.setTime(countDownDate)
+        date.setHours(current.getHours())
+        date.setMinutes(current.getMinutes())
+        date.setSeconds(current.getSeconds())
+        countDownDate = date.getTime()
+        const number = Number.parseInt(document.getElementById("period-setting-menu").value)
+        document.getElementById("countdown-until").textContent = "until class is over! (Period " + number.toString() + ")"
+    } else {
+        const number = Number.parseInt(document.getElementById("period-setting-menu").value)
+        countDownDate = new Date(`Jun 13, 2024 ${periods[number]}:01`).getTime()
+        document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
+    }
+    document.getElementById("weekends").disabled = periodEndToggle.checked
+})
+
 var font = getCookie("font")
 document.getElementById("font-customization-menu").value = font == "" ? "sans-serif" : font
 document.getElementById('body').style.fontFamily = document.getElementById("font-customization-menu").value
