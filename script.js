@@ -1,4 +1,4 @@
-var countDownDate = new Date("Jun 13, 2024 15:00:01").getTime();
+var countDownDate = new Date("Jun 13, 2024 16:00:01").getTime();
 const lol = "https://youtu.be/dQw4w9WgXcQ"
 //const lol = "https://youtu.be/-CbxUk8QX9M"
 const offDays = []
@@ -294,28 +294,28 @@ document.getElementById("font-customization-menu").addEventListener("change", ()
 })
 
 const periods = [
-    "15:00",
-    "8:43",
-    "9:31",
-    "10:18",
-    "11:05",
-    "11:52",
-    "12:39",
-    "13:26",
-    "14:13",
-    "15:00"
+    "16:00",
+    "9:43",
+    "10:31",
+    "11:18",
+    "12:05",
+    "12:52",
+    "13:39",
+    "14:26",
+    "15:13",
+    "16:00"
 ]
 
 const periodEndToggle = document.getElementById("period-end-toggle")
 
 document.getElementById("period-setting-menu").addEventListener("change", () => {
-    if (document.getElementById("period-setting-menu").value == '0') {
+    const number = Number.parseInt(document.getElementById("period-setting-menu").value)
+    if(number == NaN || number == 0) {
         countDownDate = new Date(`Jun 13, 2024 15:00:01`).getTime()
         document.getElementById("countdown-until").textContent = "until summer vacation!"
         periodEndToggle.disabled = true
         periodEndToggle.checked = false
     } else {
-        const number = Number.parseInt(document.getElementById("period-setting-menu").value)
         countDownDate = new Date(`Jun 13, 2024 ${periods[number]}:01`).getTime()
 
         document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
