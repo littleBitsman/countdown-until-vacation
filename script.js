@@ -42,8 +42,8 @@ const StudentOnlyOffDays = [
 
 var TeacherMode = false
 
-const Version = "1.11.0"
-const BetaVersion = "1.11.0"
+const Version = "1.12.1"
+const BetaVersion = "1.12.1"
 const IsBetaVersion = !(window.location.href.includes("github"))
 
 if (IsBetaVersion && Version != BetaVersion) {
