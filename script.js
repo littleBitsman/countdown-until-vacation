@@ -42,8 +42,8 @@ const StudentOnlyOffDays = [
 
 var TeacherMode = false
 
-const Version = "1.12.1"
-const BetaVersion = "1.12.1"
+const Version = "1.12.2"
+const BetaVersion = "1.12.2"
 const IsBetaVersion = !(window.location.href.includes("github"))
 
 if (IsBetaVersion && Version != BetaVersion) {
@@ -328,7 +328,7 @@ document.getElementById("period-setting-menu").addEventListener("change", () => 
         date.setHours(current.getHours())
         date.setMinutes(current.getMinutes())
         date.setSeconds(current.getSeconds())
-        countDownDate = date.getTime()
+        countDownDate = date.getTime() - 3600000
         document.getElementById("countdown-until").textContent = "until class is over! (Period " + number.toString() + ")"
     } else {
         const number = Number.parseInt(document.getElementById("period-setting-menu").value)
@@ -346,7 +346,7 @@ periodEndToggle.addEventListener("change", () => {
         date.setHours(current.getHours())
         date.setMinutes(current.getMinutes())
         date.setSeconds(current.getSeconds())
-        countDownDate = date.getTime()
+        countDownDate = date.getTime() - 3600000
         const number = Number.parseInt(document.getElementById("period-setting-menu").value)
         document.getElementById("countdown-until").textContent = "until class is over! (Period " + number.toString() + ")"
     } else {
