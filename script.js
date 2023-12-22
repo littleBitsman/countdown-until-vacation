@@ -42,8 +42,8 @@ const StudentOnlyOffDays = [
 
 var TeacherMode = false
 
-const Version = "1.12.2"
-const BetaVersion = "1.12.2"
+const Version = "1.12.3"
+const BetaVersion = "1.12.3"
 const IsBetaVersion = !(window.location.href.includes("github"))
 
 if (IsBetaVersion && Version != BetaVersion) {
@@ -164,9 +164,9 @@ function heheheha() {
     document.getElementById("lol").style.visibility = "visible"
     const thingy = Math.floor(Math.random() * 20)
     setTimeout(function() {
-        if (thingy == 1 || ((countDownDate - new Date()) <= 25200000)) {
+        if (thingy == 1 || ((countDownDate - new Date()) <= 1000)) {
             document.getElementById("lol").style.visibility = "hidden"
-            doVideo((thingy == 1 && !((countDownDate - new Date()) <= 25200000)))
+            doVideo((thingy == 1 && !((countDownDate - new Date()) <= 1000)))
         } else {
             document.getElementById('appearOnPress-h4').innerHTML = 'you got lucky this time, but dont count on your luck for next time'
         }
