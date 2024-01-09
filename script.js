@@ -37,13 +37,15 @@ const lazyOffDays = [
 const StudentOnlyOffDays = [
     "Nov 6, 2023",
     "Nov 7, 2023",
+    "Jan 23, 2024",
+    "Jan 24, 2024",
     "Apr 10, 2024"
 ]
 
 var TeacherMode = false
 
-const Version = "1.12.3"
-const BetaVersion = "1.12.3"
+const Version = "1.12.4"
+const BetaVersion = "1.12.4"
 const IsBetaVersion = !(window.location.href.includes("github"))
 
 if (IsBetaVersion && Version != BetaVersion) {
