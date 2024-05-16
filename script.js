@@ -49,9 +49,9 @@ lazyStudentOnlyOffDays.forEach(v => StudentOnlyOffDays.push(new Date(v)))
 
 var TeacherMode = false
 
-const Version = "1.12.3"
-const BetaVersion = "1.12.3"
-const IsBetaVersion = !(window.location.href.includes("github"))
+const Version = "1.13.0"
+const BetaVersion = "1.13.0"
+const IsBetaVersion = !(window.location.href.includes("github")) && Version != BetaVersion
 
 if (IsBetaVersion && Version != BetaVersion) {
     document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
