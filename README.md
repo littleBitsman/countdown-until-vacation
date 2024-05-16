@@ -3,7 +3,7 @@
 
 Main Site: https://littlebitsman.github.io/countdown-until-vacation/ 
 
-Source Code: https://replit.com/@littleBitsman/countdown-until-vacation 
+Source Code: literally here lol 
 
 Beta Version: https://countdown-until-vacation.littlebitsman.repl.co 
 
