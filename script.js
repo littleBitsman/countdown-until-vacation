@@ -51,8 +51,8 @@ lazyStudentOnlyOffDays.forEach(v => StudentOnlyOffDays.push(new Date(v)))
 
 var TeacherMode = false
 
-const Version = "1.13.0"
-const BetaVersion = "1.13.0"
+const Version = "1.13.1"
+const BetaVersion = "1.13.1"
 const IsBetaVersion = !(window.location.href.includes("github")) && Version != BetaVersion
 
 if (IsBetaVersion && Version != BetaVersion) {
@@ -192,6 +192,8 @@ var tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+/*
 function CalculateStudentOnlyOffDays() {
     const now = new Date()
     var daysOffRemaining = 0
@@ -202,6 +204,7 @@ function CalculateStudentOnlyOffDays() {
     }
     return daysOffRemaining
 }
+*/
 function CalculateDaysOffRemaining() {
     const now = new Date()
     var daysOffRemaining = offDays.reduce((prev, v) => {
@@ -227,13 +230,10 @@ function CalculateDaysOffRemaining() {
 
 var weekendsEnabled = false
 const x = setInterval(function() {
-    const now = new Date().getTime()
-    const distance = countDownDate - now;
-    // Calculate any days off from school
-    const daysOffRemaining = CalculateDaysOffRemaining()
+    const distance = countDownDate - Date.now();
     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const weekends = weekendsEnabled ? 0 : Math.floor((days / 7) * 2)
-    days -= (weekends + daysOffRemaining)
+    const weekends = weekendsEnabled ? 0 : Math.ceil((days / 7) * 2)
+    days -= (weekends + CalculateDaysOffRemaining())
     days = Math.max(days, 0)
 
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -248,11 +248,11 @@ const x = setInterval(function() {
     } else {
         document.getElementById("timer").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s"
     }
-    document.getElementById("teacher-mode-box-label").innerHTML = "Remaining Student Only Off Days: " + CalculateStudentOnlyOffDays()
+    
     if (distance < 0) {
         doVideo(false)
         document.getElementById("timer").innerHTML = document.getElementById("period-end-toggle") ? "CLASS IS OVER!!!" : "SUMMER VACATION!!!!";
-        countDownDate = new Date("Sep 1, 2023 8:00:00").getTime()
+        // countDownDate = new Date("Sep 1, 2023 8:00:00").getTime()
         clearInterval(x)
         document.getElementById("countdown-until").innerHTML = ""
         document.getElementById("settings-broken").style.visibility = ""
@@ -331,7 +331,7 @@ document.getElementById("period-setting-menu").addEventListener("change", () => 
     } else {
         countDownDate = new Date(`Jun 13, 2024 ${periods[number]}:01`).getTime()
 
-        document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
+        document.getElementById("countdown-until").textContent = "until summer vacation! (Period " + number.toString() + ")"
         periodEndToggle.disabled = false
     }
     if (periodEndToggle.checked) {
