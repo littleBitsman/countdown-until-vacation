@@ -1,4 +1,4 @@
-var countDownDate = new Date("Jun 13, 2024 16:00:01").getTime();
+var countDownDate = new Date("Jun 13, 2024 15:00:01").getTime();
 const lol = "https://youtu.be/dQw4w9WgXcQ"
 //const lol = "https://youtu.be/-CbxUk8QX9M"
 const offDays = []
@@ -34,16 +34,23 @@ const lazyOffDays = [
     "May 27, 2024"
 ]
 
-const StudentOnlyOffDays = [
+
+lazyOffDays.forEach(v => offDays.push(new Date(v)))
+
+const StudentOnlyOffDays = []
+
+const lazyStudentOnlyOffDays = [
     "Nov 6, 2023",
     "Nov 7, 2023",
     "Apr 10, 2024"
 ]
 
+lazyStudentOnlyOffDays.forEach(v => StudentOnlyOffDays.push(new Date(v)))
+
 var TeacherMode = false
 
-const Version = "1.12.2"
-const BetaVersion = "1.12.2"
+const Version = "1.12.3"
+const BetaVersion = "1.12.3"
 const IsBetaVersion = !(window.location.href.includes("github"))
 
 if (IsBetaVersion && Version != BetaVersion) {
@@ -187,8 +194,7 @@ function CalculateStudentOnlyOffDays() {
     const now = new Date()
     var daysOffRemaining = 0
     for (let index = 0; index < StudentOnlyOffDays.length; index++) {
-        const that = new Date(StudentOnlyOffDays[index])
-        if (that >= now && that <= countDownDate) {
+        if (StudentOnlyOffDays[index] >= now && StudentOnlyOffDays[index] <= countDownDate) {
             daysOffRemaining++
         }
     }
@@ -196,20 +202,23 @@ function CalculateStudentOnlyOffDays() {
 }
 function CalculateDaysOffRemaining() {
     const now = new Date()
-    var daysOffRemaining = 0
-    for (let index = 0; index < offDays.length; index++) {
-        if (offDays[index] >= now && offDays[index] <= countDownDate) {
-            daysOffRemaining++
-        }
-    }
+    var daysOffRemaining = offDays.reduce((prev, v) => {
+        if (v >= now && v <= countDownDate) return prev + 1
+        else return prev
+    }, 0)
+    /*
     for (let index = 0; index < lazyOffDays.length; index++) {
         const a = new Date(lazyOffDays[index])
         if (a >= now && a <= countDownDate) {
             daysOffRemaining++
         }
     }
+    */
     if (!TeacherMode) {
-        daysOffRemaining += CalculateStudentOnlyOffDays()
+        daysOffRemaining += StudentOnlyOffDays.reduce((prev, v) => {
+            if (v >= now && v <= countDownDate) return prev + 1
+            else return prev
+        }, 0)
     }
     return daysOffRemaining
 }
@@ -223,6 +232,7 @@ const x = setInterval(function() {
     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const weekends = weekendsEnabled ? 0 : Math.floor((days / 7) * 2)
     days -= (weekends + daysOffRemaining)
+    days = Math.max(days, 0)
 
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -294,27 +304,28 @@ document.getElementById("font-customization-menu").addEventListener("change", ()
 })
 
 const periods = [
-    "16:00",
-    "9:43",
-    "10:31",
-    "11:18",
-    "12:05",
-    "12:52",
-    "13:39",
-    "14:26",
-    "15:13",
-    "16:00"
+    "15:00",
+    "8:43",
+    "9:31",
+    "10:18",
+    "11:05",
+    "11:52",
+    "12:39",
+    "13:26",
+    "14:13",
+    "15:00"
 ]
 
 const periodEndToggle = document.getElementById("period-end-toggle")
 
 document.getElementById("period-setting-menu").addEventListener("change", () => {
     const number = Number.parseInt(document.getElementById("period-setting-menu").value)
-    if(number == NaN || number == 0) {
+    if(isNaN(number) || number == 0) {
         countDownDate = new Date(`Jun 13, 2024 15:00:01`).getTime()
         document.getElementById("countdown-until").textContent = "until summer vacation!"
         periodEndToggle.disabled = true
         periodEndToggle.checked = false
+        document.getElementById("weekends").disabled = false
     } else {
         countDownDate = new Date(`Jun 13, 2024 ${periods[number]}:01`).getTime()
 
@@ -328,7 +339,7 @@ document.getElementById("period-setting-menu").addEventListener("change", () => 
         date.setHours(current.getHours())
         date.setMinutes(current.getMinutes())
         date.setSeconds(current.getSeconds())
-        countDownDate = date.getTime() - 3600000
+        countDownDate = date.getTime()
         document.getElementById("countdown-until").textContent = "until class is over! (Period " + number.toString() + ")"
     } else {
         const number = Number.parseInt(document.getElementById("period-setting-menu").value)
@@ -346,7 +357,7 @@ periodEndToggle.addEventListener("change", () => {
         date.setHours(current.getHours())
         date.setMinutes(current.getMinutes())
         date.setSeconds(current.getSeconds())
-        countDownDate = date.getTime() - 3600000
+        countDownDate = date.getTime()
         const number = Number.parseInt(document.getElementById("period-setting-menu").value)
         document.getElementById("countdown-until").textContent = "until class is over! (Period " + number.toString() + ")"
     } else {
