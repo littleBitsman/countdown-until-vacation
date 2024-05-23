@@ -52,8 +52,8 @@ lazyStudentOnlyOffDays.forEach(v => StudentOnlyOffDays.push(new Date(v)))
 
 var TeacherMode = false
 
-const Version = "1.13.1"
-const BetaVersion = "1.13.1"
+const Version = "1.13.2"
+const BetaVersion = "1.13.2"
 const IsBetaVersion = !(window.location.href.includes("github")) && Version != BetaVersion
 
 if (IsBetaVersion && Version != BetaVersion) {
@@ -347,7 +347,8 @@ document.getElementById("period-setting-menu").addEventListener("change", () => 
     } else {
         const number = Number.parseInt(document.getElementById("period-setting-menu").value)
         countDownDate = new Date(`Jun 13, 2024 ${periods[number]}:01`).getTime()
-        document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
+        if (number == 0 || isNaN(number)) document.getElementById("countdown-until").textContent = "until summer vacation!"
+        else document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
     }
 })
 
