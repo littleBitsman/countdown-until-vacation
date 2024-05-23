@@ -44,7 +44,8 @@ const StudentOnlyOffDays = []
 const lazyStudentOnlyOffDays = [
     "Nov 6, 2023",
     "Nov 7, 2023",
-    "Apr 10, 2024"
+    "Apr 10, 2024,
+    "June 4, 2024"
 ]
 
 lazyStudentOnlyOffDays.forEach(v => StudentOnlyOffDays.push(new Date(v)))
