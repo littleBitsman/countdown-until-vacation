@@ -142,7 +142,7 @@ function doVideo(unlucky) {
     //window.location.href = ""
     document.getElementById("heheheha").innerHTML = "<b>I told you. You could have avoided this, but no. Enjoy.</b> <small>gottem</small>"
     document.getElementById("appearOnPress-h3").innerHTML = "oh and by the way, you cant pause it lol"
-    document.getElementById("appearOnPress-h4").innerHTML = "<strong>what have you done...</strong>"
+    document.getElementById("appearOnPress-h4").innerHTML = "<strong>what have you done...</strong>I TOLD YOU NOT TO ¯\\_(ツ)_/¯"
     if (unlucky == true) {
         document.getElementById("appearOnPress-h4").innerHTML += " also you got really unlucky 5% chance the rickroll happens when its not the last school day L bozo"
     }
