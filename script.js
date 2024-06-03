@@ -45,7 +45,7 @@ const lazyStudentOnlyOffDays = [
     "Nov 6, 2023",
     "Nov 7, 2023",
     "Apr 10, 2024",
-    "June 4, 2024"
+    "Jun 4, 2024"
 ]
 
 lazyStudentOnlyOffDays.forEach(v => StudentOnlyOffDays.push(new Date(v)))
@@ -233,7 +233,7 @@ var weekendsEnabled = false
 const x = setInterval(function() {
     const distance = countDownDate - Date.now();
     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const weekends = weekendsEnabled ? 0 : Math.ceil((days / 7) * 2)
+    const weekends = weekendsEnabled ? 0 : Math.floor(days / 7 * 2)
     days -= (weekends + CalculateDaysOffRemaining())
     days = Math.max(days, 0)
 
@@ -252,7 +252,7 @@ const x = setInterval(function() {
     
     if (distance < 0) {
         doVideo(false)
-        document.getElementById("timer").innerHTML = document.getElementById("period-end-toggle") ? "CLASS IS OVER!!!" : "SUMMER VACATION!!!!";
+        document.getElementById("timer").innerHTML = document.getElementById("period-end-toggle").checked ? "CLASS IS OVER!!!" : "SUMMER VACATION!!!!";
         // countDownDate = new Date("Sep 1, 2023 8:00:00").getTime()
         clearInterval(x)
         document.getElementById("countdown-until").innerHTML = ""
