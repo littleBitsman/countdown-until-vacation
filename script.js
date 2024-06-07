@@ -52,8 +52,8 @@ lazyStudentOnlyOffDays.forEach(v => StudentOnlyOffDays.push(new Date(v)))
 
 var TeacherMode = false
 
-const Version = "1.13.2"
-const BetaVersion = "1.13.2"
+const Version = "1.13.3"
+const BetaVersion = "1.13.3"
 const IsBetaVersion = !(window.location.href.includes("github")) && Version != BetaVersion
 
 if (IsBetaVersion && Version != BetaVersion) {
@@ -206,6 +206,36 @@ function CalculateStudentOnlyOffDays() {
     return daysOffRemaining
 }
 */
+var prevDayUsed = -1
+var prevCalculatedWeekends = 0
+function CalculateWeekends() {
+    const now = new Date()
+    if (now.getDay() == prevDayUsed) 
+        return prevCalculatedWeekends
+
+    prevDayUsed = now.getDay()
+    const val = CalculateWeekendsRaw(now, countDownDate)
+    prevCalculatedWeekends = val
+    return val
+}
+function CalculateWeekendsRaw(startDate, endDate) {
+    var start = new Date(startDate)
+    var end = new Date(endDate)
+
+    if (start > end) 
+        [start, end] = [end, start]
+
+    var count = 0
+
+    while (start <= end) {
+        if (start.getDay() == 0 || start.getDay() == 6)
+            count++
+        
+        start.setDate(start.getDate() + 1)
+    }
+
+    return count
+}
 function CalculateDaysOffRemaining() {
     const now = new Date()
     var daysOffRemaining = offDays.reduce((prev, v) => {
@@ -233,7 +263,7 @@ var weekendsEnabled = false
 const x = setInterval(function() {
     const distance = countDownDate - Date.now();
     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const weekends = weekendsEnabled ? 0 : Math.floor(days / 7 * 2)
+    const weekends = weekendsEnabled ? 0 : (CalculateWeekends() || 0)
     days -= (weekends + CalculateDaysOffRemaining())
     days = Math.max(days, 0)
 
