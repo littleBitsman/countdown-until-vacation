@@ -1,39 +1,40 @@
-var countDownDate = new Date("Jun 13, 2024 15:00:01").getTime();
+var countDownDate = new Date("Jun 16, 2024 15:00:01").getTime();
 const lol = "https://youtu.be/dQw4w9WgXcQ"
 //const lol = "https://youtu.be/-CbxUk8QX9M"
 const offDays = []
 
 const lazyOffDays = [
-    "Sep 25, 2023",
-    "Oct 9, 2023",
-    "Nov 10, 2023",
-    "Nov 23, 2023",
-    "Nov 24, 2023",
-    "Jan 23, 2024",
-    "Jan 24, 2024",
-    "Dec 25, 2023",
-    "Dec 26, 2023",
-    "Dec 27, 2023",
-    "Dec 28, 2023",
-    "Dec 29, 2023",
-    "Jan 1, 2024",
-    "Jan 15, 2024",
-    "Feb 19, 2024",
-    "Feb 20, 2024",
-    "Feb 21, 2024",
-    "Feb 22, 2024",
-    "Feb 23, 2024",
-    "Mar 28, 2024",
-    "Mar 29, 2024",
-    "Apr 1, 2024",
-    "Apr 22, 2024",
-    "Apr 23, 2024",
-    "Apr 24, 2024",
-    "Apr 25, 2024",
-    "Apr 26, 2024",
-    "Apr 29, 2024",
-    "Apr 30, 2024",
-    "May 27, 2024"
+    "Sep 2, 2024",
+    "Oct 3, 2024",
+    "Oct 4, 2024",
+    "Oct 14, 2024",
+    "Nov 11, 2024",
+    "Nov 28, 2024",
+    "Nov 29, 2024"
+    "Dec 23, 2024",
+    "Dec 24, 2024",
+    "Dec 25, 2024",
+    "Dec 26, 2024",
+    "Dec 27, 2024",
+    "Dec 30, 2024",
+    "Dec 31, 2024",
+    "Jan 1, 2025",
+    "Jan 2, 2025",
+    "Jan 3, 2025",
+    "Jan 20, 2025",
+    "Jan 29, 2025",
+    "Feb 17, 2025",
+    "Feb 18, 2025",
+    "Feb 19, 2025",
+    "Feb 20, 2025",
+    "Feb 21, 2025",
+    "Apr 14, 2025",
+    "Apr 15, 2025",
+    "Apr 16, 2025",
+    "Apr 17, 2025",
+    "Apr 18, 2025",
+    "Apr 21, 2025",
+    "May 26, 2025"
 ]
 
 
@@ -42,10 +43,11 @@ lazyOffDays.forEach(v => offDays.push(new Date(v)))
 const StudentOnlyOffDays = []
 
 const lazyStudentOnlyOffDays = [
-    "Nov 6, 2023",
-    "Nov 7, 2023",
-    "Apr 10, 2024",
-    "Jun 4, 2024"
+    "Nov 1, 2024",
+    "Nov 5, 2024",
+    "Mar 31, 2025",
+    "Jun 10, 2025",
+    "Jun 11, 2025"
 ]
 
 lazyStudentOnlyOffDays.forEach(v => StudentOnlyOffDays.push(new Date(v)))
