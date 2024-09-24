@@ -356,13 +356,13 @@ const periodEndToggle = document.getElementById("period-end-toggle")
 document.getElementById("period-setting-menu").addEventListener("change", () => {
     const number = Number.parseInt(document.getElementById("period-setting-menu").value)
     if(isNaN(number) || number == 0) {
-        countDownDate = new Date(`Jun 13, 2024 15:00:01`).getTime()
+        countDownDate = new Date(`Jun 16, 2025 15:00:01`).getTime()
         document.getElementById("countdown-until").textContent = "until summer vacation!"
         periodEndToggle.disabled = true
         periodEndToggle.checked = false
         document.getElementById("weekends").disabled = false
     } else {
-        countDownDate = new Date(`Jun 13, 2024 ${periods[number]}:01`).getTime()
+        countDownDate = new Date(`Jun 16, 2025 ${periods[number]}:01`).getTime()
 
         document.getElementById("countdown-until").textContent = "until summer vacation! (Period " + number.toString() + ")"
         periodEndToggle.disabled = false
@@ -378,7 +378,7 @@ document.getElementById("period-setting-menu").addEventListener("change", () => 
         document.getElementById("countdown-until").textContent = "until class is over! (Period " + number.toString() + ")"
     } else {
         const number = Number.parseInt(document.getElementById("period-setting-menu").value)
-        countDownDate = new Date(`Jun 13, 2024 ${periods[number]}:01`).getTime()
+        countDownDate = new Date(`Jun 16, 2025 ${periods[number]}:01`).getTime()
         if (number == 0 || isNaN(number)) document.getElementById("countdown-until").textContent = "until summer vacation!"
         else document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
     }
@@ -398,7 +398,7 @@ periodEndToggle.addEventListener("change", () => {
         document.getElementById("countdown-until").textContent = "until class is over! (Period " + number.toString() + ")"
     } else {
         const number = Number.parseInt(document.getElementById("period-setting-menu").value)
-        countDownDate = new Date(`Jun 13, 2024 ${periods[number]}:01`).getTime()
+        countDownDate = new Date(`Jun 16, 2025 ${periods[number]}:01`).getTime()
         document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
     }
     document.getElementById("weekends").disabled = periodEndToggle.checked
