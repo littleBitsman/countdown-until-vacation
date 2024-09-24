@@ -1,4 +1,4 @@
-var countDownDate = new Date("Jun 16, 2024 15:00:01").getTime();
+var countDownDate = new Date("Jun 16, 2025 15:00:01").getTime();
 const lol = "https://youtu.be/dQw4w9WgXcQ"
 //const lol = "https://youtu.be/-CbxUk8QX9M"
 const offDays = []
@@ -10,7 +10,7 @@ const lazyOffDays = [
     "Oct 14, 2024",
     "Nov 11, 2024",
     "Nov 28, 2024",
-    "Nov 29, 2024"
+    "Nov 29, 2024",
     "Dec 23, 2024",
     "Dec 24, 2024",
     "Dec 25, 2024",
