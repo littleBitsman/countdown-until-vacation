@@ -1,4 +1,4 @@
-var countDownDate = new Date("Jun 16, 2025 15:00:01").getTime();
+var countDownDate = new Date("Jun 16, 2025 16:00:01").getTime();
 const lol = "https://youtu.be/dQw4w9WgXcQ"
 //const lol = "https://youtu.be/-CbxUk8QX9M"
 const offDays = []
@@ -339,16 +339,16 @@ document.getElementById("font-customization-menu").addEventListener("change", ()
 })
 
 const periods = [
-    "15:00",
-    "8:43",
-    "9:31",
-    "10:18",
-    "11:05",
-    "11:52",
-    "12:39",
-    "13:26",
-    "14:13",
-    "15:00"
+    "16:00",
+    "9:43",
+    "10:31",
+    "11:18",
+    "12:05",
+    "12:52",
+    "13:39",
+    "14:26",
+    "15:13",
+    "16:00"
 ]
 
 const periodEndToggle = document.getElementById("period-end-toggle")
