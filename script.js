@@ -1,4 +1,4 @@
-var countDownDate = new Date("Jun 16, 2025 16:00:01").getTime();
+var countDownDate = new Date("Jun 16, 2025 15:00:01").getTime();
 const lol = "https://youtu.be/dQw4w9WgXcQ"
 //const lol = "https://youtu.be/-CbxUk8QX9M"
 const offDays = []
