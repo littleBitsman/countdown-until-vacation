@@ -1,450 +1,327 @@
-var countDownDate = new Date("Jun 16, 2025 15:00:01").getTime();
-const lol = "https://youtu.be/dQw4w9WgXcQ"
-//const lol = "https://youtu.be/-CbxUk8QX9M"
-const offDays = []
+(function() {
+  // --- Configuration ---
+  const COUNTDOWN_TARGET = new Date("Jun 16, 2026 15:00:01");
+  const RICKROLL = "https://youtu.be/dQw4w9WgXcQ";
 
-const lazyOffDays = [
-    "Sep 2, 2024",
-    "Oct 3, 2024",
-    "Oct 4, 2024",
-    "Oct 14, 2024",
-    "Nov 11, 2024",
-    "Nov 28, 2024",
-    "Nov 29, 2024",
-    "Dec 23, 2024",
-    "Dec 24, 2024",
-    "Dec 25, 2024",
-    "Dec 26, 2024",
-    "Dec 27, 2024",
-    "Dec 30, 2024",
-    "Dec 31, 2024",
-    "Jan 1, 2025",
-    "Jan 2, 2025",
-    "Jan 3, 2025",
-    "Jan 20, 2025",
-    "Jan 29, 2025",
-    "Feb 17, 2025",
-    "Feb 18, 2025",
-    "Feb 19, 2025",
-    "Feb 20, 2025",
-    "Feb 21, 2025",
-    "Apr 14, 2025",
-    "Apr 15, 2025",
-    "Apr 16, 2025",
-    "Apr 17, 2025",
-    "Apr 18, 2025",
-    "Apr 21, 2025",
-    "May 26, 2025"
-]
+  // Fill these with Date strings or Date objects as needed
+  const offDays = [
+    "May 25, 2026",
+    "May 27, 2026"
+  ];
+  const studentOnlyOffDays = [];
 
+  const Version = "1.13.3";
+  const BetaVersion = "1.13.3";
 
-lazyOffDays.forEach(v => offDays.push(new Date(v)))
+  // timer interval (ms)
+  const TIMER_INTERVAL_MS = 10;
+  const NEAR_END_MS = 7 * 60 * 60 * 1000; // 7 hours (used for "near end" rickroll logic)
 
-const StudentOnlyOffDays = []
+  // --- State ---
+  let state = {
+    targetTime: COUNTDOWN_TARGET.getTime(),
+    teacherMode: false,
+    weekendsEnabled: false
+  };
 
-const lazyStudentOnlyOffDays = [
-    "Nov 1, 2024",
-    "Nov 5, 2024",
-    "Mar 31, 2025",
-    "Jun 10, 2025",
-    "Jun 11, 2025"
-]
+  // --- DOM cache ---
+  const $ = id => document.getElementById(id);
+  const elements = {
+    betaIndicator: $('beta-indicator'),
+    timer: $('timer'),
+    countdownUntil: $('countdown-until'),
+    periodSetting: $('period-setting-menu'),
+    periodEndToggle: $('period-end-toggle'),
+    weekendsCheckbox: $('weekends'),
+    teacherMode: $('teachermode'),
+    customColor: $('customcolor'),
+    fontMenu: $('font-customization-menu'),
+    settingsButton: $('settings-button'),
+    settingsMenu: $('settings-menu'),
+    overlay: $('overlay'),
+    closeButton: $('close-button')
+  };
 
-lazyStudentOnlyOffDays.forEach(v => StudentOnlyOffDays.push(new Date(v)))
+  // --- Utilities ---
+  function setCookie(name, value, days) {
+    const d = new Date();
+    d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
+  }
+  function getCookie(name) {
+    const v = document.cookie.split(';').map(c => c.trim()).find(c => c.startsWith(name + '='));
+    return v ? v.split('=')[1] : '';
+  }
 
-var TeacherMode = false
+  function formatRemaining(distanceMs, effectiveDays) {
+    // distanceMs is raw ms to target; effectiveDays is days after removing weekends/off-days
+    const dayMs = 24 * 60 * 60 * 1000;
+    const hours = Math.floor((distanceMs % dayMs) / (1000 * 60 * 60));
+    const minutes = Math.floor((distanceMs % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distanceMs % (1000 * 60)) / 1000);
 
-const Version = "1.13.3"
-const BetaVersion = "1.13.3"
-const IsBetaVersion = !(window.location.href.includes("github")) && Version != BetaVersion
+    if (effectiveDays === 0 && hours === 0 && minutes === 0) return `${seconds}s`;
+    if (effectiveDays === 0 && hours === 0) return `${minutes}m ${seconds}s`;
+    if (effectiveDays === 0) return `${hours}h ${minutes}m ${seconds}s`;
+    return `${effectiveDays}d ${hours}h ${minutes}m ${seconds}s`;
+  }
 
-if (IsBetaVersion && Version != BetaVersion) {
-    document.getElementById("beta-indicator").innerHTML = "Beta Version " + BetaVersion
-} else {
-    document.getElementById("beta-indicator").innerHTML = "Version " + Version
-}
+  function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 
-const TimerRefreshRate = 1 // Milliseconds !
+  // count weekends between two dates (inclusive start, inclusive end)
+  function countWeekendsBetween(start, end) {
+    // normalize to startOfDay
+    const s = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+    const e = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+    if (s > e) return 0;
 
-function load() {
-    var scriptUrl = 'https:\/\/www.youtube.com\/s\/player\/23010b46\/www-widgetapi.vflset\/www-widgetapi.js'; try { var ttPolicy = window.trustedTypes.createPolicy("youtube-widget-api", { createScriptURL: function(x) { return x } }); scriptUrl = ttPolicy.createScriptURL(scriptUrl) } catch (e) { } if (!window["YT"]) var YT = { loading: 0, loaded: 0 }; if (!window["YTConfig"]) var YTConfig = { "host": "https://www.youtube.com" };
-    if (!YT.loading) {
-        YT.loading = 1; (function() {
-            var l = []; YT.ready = function(f) { if (YT.loaded) f(); else l.push(f) }; window.onYTReady = function() { YT.loaded = 1; for (var i = 0; i < l.length; i++)try { l[i]() } catch (e$0) { } }; YT.setConfig = function(c) { for (var k in c) if (c.hasOwnProperty(k)) YTConfig[k] = c[k] }; var a = document.createElement("script"); a.type = "text/javascript"; a.id = "www-widgetapi-script"; a.src = scriptUrl; a.async = true; var c = document.currentScript; if (c) { var n = c.nonce || c.getAttribute("nonce"); if (n) a.setAttribute("nonce", n) } var b =
-                document.getElementsByTagName("script")[0]; b.parentNode.insertBefore(a, b)
-        })()
-    };
-}
-load()
+    const dayMs = 24 * 60 * 60 * 1000;
+    const totalDays = Math.floor((e - s) / dayMs) + 1;
+    const fullWeeks = Math.floor(totalDays / 7);
+    let weekends = fullWeeks * 2;
 
-const string = `
-well that just happened
-k
-😭😭😭
-LOL
-can you guys get markiplier to play now
-hi :3
-hewwo :3
-NEVER LET BRO COOK 🔥🔥🔥🗣️🗣️
-AND THE CROWD GOES MILD 🔥🔥🔥🔥
-BRO DOESN'T UNDERSTAND ANYTHING 💯💯💯🔥🔥🔥🗣️🗣️
-teehee ^w^
-ItsThump is not a developer
-you proud of yourself?
-Look behind you.
-wow...
-LOOL bro what are you doing
-try again
-GG GO NEXT
-great job!!
-bro 💀💀
-You have hidden talent 🔥🔥 keep it hidden 🔥🔥
-true
-umm... yea
-STOP 💯💯🔥🔥
-yup
-april fools! did i get you
-Not quite but we up 💯💯
-GO AGANE
-💀
-┻━┻︵ヽ(\`▯´)ﾉ︵ ┻━┻
-o3o
-T_T
-Started from bottom still there 🔥🔥🔥🗣️🗣️
->3<
-nice one
-o_o
-alright then
-good job
-erm...
-AND THE CROUD EXCHANGES WEIRD GLANCES 🔥🔥🔥🔥
-🥺
->w<
-<(0_0)>
-hi
-;-;
-nah... what was bro doing 😭😭😭
-bro...
-yea you just suck. sorry
-F
-wow...
-AND THE CROWD WANTS TO GO HOME 🔥🔥🔥🔥
-O_O
-;w;
-what?
-;_;
-`
-const guidinglight = string.split(`\n`)
+    // remainder days
+    const rem = totalDays % 7;
+    for (let i = 0; i < rem; i++) {
+      const weekday = (s.getDay() + i) % 7;
+      if (weekday === 0 || weekday === 6) weekends++;
+    }
+    return weekends;
+  }
 
-function doVideo(unlucky) {
+  function countOffDaysBetween(list, start, end) {
+    if (!list || list.length === 0) return 0;
+    return list.reduce((acc, d) => {
+      const date = (d instanceof Date) ? d : new Date(d);
+      if (!isNaN(date) && date >= start && date <= end) return acc + 1;
+      return acc;
+    }, 0);
+  }
+
+  // --- YouTube loader (kept compatible with previous behavior) ---
+  function loadYouTubeAPI() {
+    const scriptUrl = 'https://www.youtube.com/s/player/23010b46/www-widgetapi.vflset/www-widgetapi.js';
+    try { window.trustedTypes && window.trustedTypes.createPolicy('youtube-widget-api', { createScriptURL: x => x }).createScriptURL(scriptUrl); } catch (e) { }
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  }
+
+  // --- Video / prank behavior ---
+  const guidingString = `\nwell that just happened\nk\n😭😭😭\nLOL\ncan you guys get markiplier to play now\nhi :3\nhewwo :3\nNEVER LET BRO COOK 🔥🔥🔥🗣️🗣️\nAND THE CROWD GOES MILD 🔥🔥🔥🔥\nBRO DOESN'T UNDERSTAND ANYTHING 💯💯💯🔥🔥🔥🗣️🗣️\nteehee ^w^\nItsThump is not a developer\nyou proud of yourself?\nLook behind you.\nwow...\nLOOL bro what are you doing\ntry again\nGG GO NEXT\ngreat job!!\nbro 💀💀\nYou have hidden talent 🔥🔥 keep it hidden 🔥🔥\ntrue\numm... yea\nSTOP 💯💯🔥🔥\nyup\napril fools! did i get you\nNot quite but we up 💯💯\nGO AGANE\n💀\n┻━┻︵ヽ(\`▯´)ﾉ︵ ┻━┻\no3o\nT_T\nStarted from bottom still there 🔥🔥🔥🗣️🗣️\n>3<\nnice one\no_o\nalright then\ngood job\nerm...\nAND THE CROUD EXCHANGES WEIRD GLANCES 🔥🔥🔥🔥\n🥺\n>w<\n<(0_0)>\nhi\n;-;\nnah... what was bro doing 😭😭😭\nbro...\nyea you just suck. sorry\nF\nwow...\nAND THE CROWD WANTS TO GO HOME 🔥🔥🔥🔥\nO_O\n;w;\nwhat?\n;_;\n`;
+  const guidinglight = guidingString.split('\n');
+
+  function doVideo(unlucky) {
     function onPlayerReady(event) {
-        event.target.playVideo();
-        setInterval(() => { event.target.playVideo(); }, 0.000000001)
+      try { event.target.playVideo(); } catch (e) {}
+      setInterval(() => { try { event.target.playVideo(); } catch (e) {} }, 1000);
     }
-    //window.location.href = ""
-    document.getElementById("heheheha").innerHTML = "<b>I told you. You could have avoided this, but no. Enjoy.</b> <small>gottem</small>"
-    document.getElementById("appearOnPress-h3").innerHTML = "oh and by the way, you cant pause it lol"
-    document.getElementById("appearOnPress-h4").innerHTML = "<strong>what have you done...</strong>I TOLD YOU NOT TO ¯\\_(ツ)_/¯"
-    if (unlucky == true) {
-        document.getElementById("appearOnPress-h4").innerHTML += " also you got really unlucky 5% chance the rickroll happens when its not the last school day L bozo"
+
+    const textEl = $('heheheha');
+    if (textEl) textEl.innerHTML = "<b>I told you. You could have avoided this, but no. Enjoy.</b> <small>gottem</small>";
+    const h3 = $('appearOnPress-h3'); if (h3) h3.innerHTML = "oh and by the way, you cant pause it lol";
+    const h4 = $('appearOnPress-h4'); if (h4) h4.innerHTML = "<strong>what have you done...</strong>I TOLD YOU NOT TO ¯\\_(ツ)_/¯";
+    if (unlucky && h4) h4.innerHTML += " also you got really unlucky 5% chance the rickroll happens when its not the last school day L bozo";
+    const h5 = $('appearOnPress-h5'); if (h5) h5.innerHTML = "on mobile and tablet devices it doesnt autoplay :(";
+    const funnystuff = $('funnystuff'); if (funnystuff) funnystuff.style.color = '#ff0000';
+    const guid = $('guiding-light'); if (guid) {
+      guid.style.color = '#77ABB4';
+      guid.innerHTML = 'my honest reaction: ' + guidinglight[Math.floor(Math.random() * guidinglight.length)];
     }
-    document.getElementById("appearOnPress-h5").innerHTML = "on mobile and tablet devices it doesnt autoplay :("
-    document.getElementById("funnystuff").style.color = "#ff0000"
-    document.getElementById("guiding-light").style.color = "#77ABB4"
-    document.getElementById("guiding-light").innerHTML = "my honest reaction: " + guidinglight[Math.floor(Math.random() * guidinglight.length)]
-    const videoId = lol.replace("https://youtu.be/", "")
-    new YT.Player('video', {
+
+    const videoId = RICKROLL.replace('https://youtu.be/', '');
+    try {
+      new YT.Player('video', {
         height: '390',
         width: '640',
-        videoId: videoId,
-        playerVars: {
-            'playsinline': 1,
-            'controls': 0
-        },
-        playsinline: 1,
-        events: {
-            'onReady': onPlayerReady
-        },
+        videoId,
+        playerVars: { playsinline: 1, controls: 0 },
+        events: { onReady: onPlayerReady },
         allow: 'autoplay'
+      });
+    } catch (e) {}
+  }
+
+  function triggerRickrollIfEligible() {
+    const thingy = Math.floor(Math.random() * 20);
+    const isNearEnd = (state.targetTime - Date.now()) <= NEAR_END_MS;
+    // small delay to let UI update
+    setTimeout(() => {
+      if (thingy === 1 || isNearEnd) {
+        const lolEl = $('lol'); if (lolEl) lolEl.style.visibility = 'hidden';
+        doVideo(thingy === 1 && !isNearEnd);
+      } else {
+        const h4 = $('appearOnPress-h4'); if (h4) h4.innerHTML = 'you got lucky this time, but dont count on your luck for next time';
+      }
+    }, 5000);
+  }
+
+  // --- Main countdown logic ---
+  function computeEffectiveDays(now, target) {
+    const rawDays = Math.floor((target.getTime() - now.getTime()) / (24 * 60 * 60 * 1000));
+    if (rawDays <= 0) return 0;
+
+    const weekends = state.weekendsEnabled ? 0 : countWeekendsBetween(now, target);
+    const daysOff = countOffDaysBetween(offDays, now, target) + (state.teacherMode ? 0 : countOffDaysBetween(studentOnlyOffDays, now, target));
+
+    return Math.max(0, rawDays - weekends - daysOff);
+  }
+
+  function updateTimer() {
+    const now = new Date();
+    const target = new Date(state.targetTime);
+    const distance = state.targetTime - Date.now();
+
+    if (distance <= 0) {
+      doVideo(false);
+      const msg = elements.periodEndToggle && elements.periodEndToggle.checked ? 'CLASS IS OVER!!!' : 'SUMMER VACATION!!!!';
+      if (elements.timer) elements.timer.innerHTML = msg;
+      clearInterval(window.__countdownInterval);
+      const cb = $('countdown-until'); if (cb) cb.innerHTML = '';
+      const sb = $('settings-broken'); if (sb) sb.style.visibility = '';
+      return;
+    }
+
+    const effectiveDays = computeEffectiveDays(now, target);
+    const display = formatRemaining(distance, effectiveDays);
+    if (elements.timer) elements.timer.innerHTML = display;
+  }
+
+  // --- Period selection logic ---
+  const periods = [
+    '16:00','9:43','10:31','11:18','12:05','12:52','13:39','14:26','15:13','16:00'
+  ];
+
+  function applyPeriodSetting(number) {
+    if (isNaN(number) || number === 0) {
+      state.targetTime = COUNTDOWN_TARGET.getTime();
+      if (elements.countdownUntil) elements.countdownUntil.textContent = 'until summer vacation!';
+      if (elements.periodEndToggle) { elements.periodEndToggle.disabled = true; elements.periodEndToggle.checked = false; }
+      if (elements.weekendsCheckbox) elements.weekendsCheckbox.disabled = false;
+      return;
+    }
+
+    const time = periods[number] || periods[0];
+    const newTarget = new Date(COUNTDOWN_TARGET.getFullYear(), COUNTDOWN_TARGET.getMonth(), COUNTDOWN_TARGET.getDate());
+    const [hh, mm] = time.split(':').map(Number);
+    newTarget.setHours(hh, mm, 1, 0);
+    state.targetTime = newTarget.getTime();
+    if (elements.countdownUntil) elements.countdownUntil.textContent = `until summer vacation! (Period ${number})`;
+    if (elements.periodEndToggle) elements.periodEndToggle.disabled = false;
+  }
+
+  // --- Initialization & event wiring ---
+  function init() {
+    // version indicator
+    const isBeta = !(window.location.href.includes('github')) && Version !== BetaVersion;
+    if (elements.betaIndicator) elements.betaIndicator.innerHTML = isBeta ? `Beta Version ${BetaVersion}` : `Version ${Version}`;
+
+    // restore cookie settings
+    const savedFont = getCookie('font'); if (elements.fontMenu) elements.fontMenu.value = savedFont === '' ? 'sans-serif' : savedFont;
+    const savedColor = getCookie('color'); if (elements.customColor) elements.customColor.value = savedColor;
+    if ($('body')) $('body').style.fontFamily = elements.fontMenu ? elements.fontMenu.value : 'sans-serif';
+    if ($('body')) $('body').style.color = savedColor || $('#customcolor')?.value || $('body').style.color;
+
+    if (getCookie('teachermode') === 'true') state.teacherMode = true;
+    if (elements.teacherMode) elements.teacherMode.checked = state.teacherMode;
+
+    // wire controls
+    if (elements.weekendsCheckbox) elements.weekendsCheckbox.addEventListener('change', (e) => {
+      state.weekendsEnabled = e.target.checked;
+      if (elements.periodEndToggle) elements.periodEndToggle.disabled = e.target.checked || (elements.periodSetting && elements.periodSetting.value === '0');
+      updateTimer();
     });
-}
 
+    if (elements.teacherMode) elements.teacherMode.addEventListener('change', (e) => {
+      state.teacherMode = e.target.checked;
+      setCookie('teachermode', state.teacherMode, 30);
+      if (elements.timer) elements.timer.innerHTML = 'Calculating...';
+    });
 
-function heheheha() {
-    document.getElementById("heheheha").innerHTML = "<b>haha theres nothing anymore!!</b>"
-    document.getElementById("rickroll").disabled = true
-    document.getElementById("lol").style.visibility = "visible"
-    const thingy = Math.floor(Math.random() * 20)
-    setTimeout(function() {
-        if (thingy == 1 || ((countDownDate - new Date()) <= 25200000)) {
-            document.getElementById("lol").style.visibility = "hidden"
-            doVideo((thingy == 1 && !((countDownDate - new Date()) <= 25200000)))
-        } else {
-            document.getElementById('appearOnPress-h4').innerHTML = 'you got lucky this time, but dont count on your luck for next time'
+    if (elements.customColor) elements.customColor.addEventListener('change', (e) => {
+      if (e.target.value === '#ffffff') { e.target.value = '#000000'; alert('please dont set the color to white kthx'); }
+      if ($('body')) $('body').style.color = e.target.value;
+      setCookie('color', e.target.value, 30);
+    });
+
+    if (elements.fontMenu) elements.fontMenu.addEventListener('change', (e) => {
+      if ($('body')) $('body').style.fontFamily = e.target.value;
+      setCookie('font', e.target.value, 30);
+    });
+
+    if (elements.periodSetting) elements.periodSetting.addEventListener('change', (e) => {
+      const num = Number.parseInt(e.target.value);
+      applyPeriodSetting(num);
+      // if period end toggle is active, adjust target to today at that time
+      if (elements.periodEndToggle && elements.periodEndToggle.checked) {
+        const date = new Date();
+        const cur = new Date(state.targetTime);
+        date.setHours(cur.getHours(), cur.getMinutes(), cur.getSeconds(), 0);
+        state.targetTime = date.getTime();
+        if (elements.countdownUntil) elements.countdownUntil.textContent = `until class is over! (Period ${num})`;
+      }
+    });
+
+    if (elements.periodEndToggle) elements.periodEndToggle.addEventListener('change', () => {
+      if (elements.periodEndToggle.checked) {
+        const date = new Date();
+        const cur = new Date(state.targetTime);
+        date.setHours(cur.getHours(), cur.getMinutes(), cur.getSeconds(), 0);
+        state.targetTime = date.getTime();
+        const number = Number.parseInt(elements.periodSetting ? elements.periodSetting.value : 0);
+        if (elements.countdownUntil) elements.countdownUntil.textContent = `until class is over! (Period ${number})`;
+      } else {
+        const number = Number.parseInt(elements.periodSetting ? elements.periodSetting.value : 0);
+        applyPeriodSetting(number);
+        if (elements.countdownUntil) elements.countdownUntil.textContent = `until summer vacation! (For Period ${number})`;
+      }
+      if (elements.weekendsCheckbox) elements.weekendsCheckbox.disabled = elements.periodEndToggle.checked;
+    });
+
+    // settings menu behavior
+    if (elements.settingsButton && elements.settingsMenu && elements.overlay) {
+      elements.settingsButton.addEventListener('click', () => {
+        elements.settingsMenu.classList.toggle('open'); elements.overlay.classList.toggle('open');
+      });
+      if (elements.closeButton) elements.closeButton.addEventListener('click', () => { elements.settingsMenu.classList.remove('open'); elements.overlay.classList.remove('open'); });
+      document.addEventListener('click', (event) => {
+        if (!elements.settingsMenu.contains(event.target) && event.target !== elements.settingsButton) {
+          elements.settingsMenu.classList.remove('open'); elements.overlay.classList.remove('open');
         }
-    }, 5000)
-}
-/*
-function heheheha() {
-    document.getElementById("lol").style.visibility = "show"
-}
-*/
-
-var tag = document.createElement('script');
-
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-/*
-function CalculateStudentOnlyOffDays() {
-    const now = new Date()
-    var daysOffRemaining = 0
-    for (let index = 0; index < StudentOnlyOffDays.length; index++) {
-        if (StudentOnlyOffDays[index] >= now && StudentOnlyOffDays[index] <= countDownDate) {
-            daysOffRemaining++
-        }
-    }
-    return daysOffRemaining
-}
-*/
-var prevDayUsed = -1
-var prevCalculatedWeekends = 0
-function CalculateWeekends() {
-    const now = new Date()
-    if (now.getDay() == prevDayUsed) 
-        return prevCalculatedWeekends
-
-    prevDayUsed = now.getDay()
-    const val = CalculateWeekendsRaw(now, countDownDate)
-    prevCalculatedWeekends = val
-    return val
-}
-function CalculateWeekendsRaw(startDate, endDate) {
-    var start = new Date(startDate)
-    var end = new Date(endDate)
-
-    if (start > end) 
-        [start, end] = [end, start]
-
-    var count = 0
-
-    while (start <= end) {
-        if (start.getDay() == 0 || start.getDay() == 6)
-            count++
-        
-        start.setDate(start.getDate() + 1)
+      });
     }
 
-    return count
-}
-function CalculateDaysOffRemaining() {
-    const now = new Date()
-    var daysOffRemaining = offDays.reduce((prev, v) => {
-        if (v >= now && v <= countDownDate) return prev + 1
-        else return prev
-    }, 0)
-    /*
-    for (let index = 0; index < lazyOffDays.length; index++) {
-        const a = new Date(lazyOffDays[index])
-        if (a >= now && a <= countDownDate) {
-            daysOffRemaining++
-        }
-    }
-    */
-    if (!TeacherMode) {
-        daysOffRemaining += StudentOnlyOffDays.reduce((prev, v) => {
-            if (v >= now && v <= countDownDate) return prev + 1
-            else return prev
-        }, 0)
-    }
-    return daysOffRemaining
-}
+    // reset-settings button (keeps previous behavior)
+    const resetBtn = $('reset-settings');
+    if (resetBtn) resetBtn.addEventListener('click', (event) => {
+      if ($('body')) $('body').style.color = event.target.value;
+      setCookie('color', event.target.value, 30);
+      state.teacherMode = event.target.checked;
+      setCookie('teachermode', state.teacherMode, 30);
+      if (elements.timer) elements.timer.innerHTML = 'Calculating...';
+      setCookie('font', 'sans-serif', 30);
+      if ($('body')) $('body').style.fontFamily = 'sans-serif';
+    });
 
-var weekendsEnabled = false
-const x = setInterval(function() {
-    const distance = countDownDate - Date.now();
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const weekends = weekendsEnabled ? 0 : (CalculateWeekends() || 0)
-    days -= (weekends + CalculateDaysOffRemaining())
-    days = Math.max(days, 0)
+    // load YouTube API
+    loadYouTubeAPI();
 
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    if (minutes == 0 && hours == 0 && days == 0) {
-        document.getElementById("timer").innerHTML = seconds + "s"
-    } else if (hours == 0 && days == 0) {
-        document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s"
-    } else if (days == 0) {
-        document.getElementById("timer").innerHTML = hours + "h " + minutes + "m " + seconds + "s";
-    } else {
-        document.getElementById("timer").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s"
-    }
-    
-    if (distance < 0) {
-        doVideo(false)
-        document.getElementById("timer").innerHTML = document.getElementById("period-end-toggle").checked ? "CLASS IS OVER!!!" : "SUMMER VACATION!!!!";
-        // countDownDate = new Date("Sep 1, 2023 8:00:00").getTime()
-        clearInterval(x)
-        document.getElementById("countdown-until").innerHTML = ""
-        document.getElementById("settings-broken").style.visibility = ""
-    }
-}, TimerRefreshRate);
+    // start interval
+    window.__countdownInterval = setInterval(updateTimer, TIMER_INTERVAL_MS);
+    updateTimer();
+  }
 
-function setCookie(cname, cvalue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    let expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-function getCookie(cname) {
-    let name = cname + "=";
-    let ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
+  // expose a minimal API for future use (e.g. tests, adding offDays)
+  window.CountdownApp = {
+    setTarget(date) { state.targetTime = (date instanceof Date) ? date.getTime() : new Date(date).getTime(); },
+    addOffDay(d, studentOnly = false) { (studentOnly ? studentOnlyOffDays : offDays).push(d instanceof Date ? d : new Date(d)); },
+    setTeacherMode(v) { state.teacherMode = !!v; },
+    setWeekendsEnabled(v) { state.weekendsEnabled = !!v; },
+    triggerRickrollIfEligible
+  };
 
-document.getElementById("weekends").addEventListener("change", (ev) => {
-    weekendsEnabled = ev.target.checked
-    document.getElementById("period-end-toggle").disabled = ev.target.checked || document.getElementById("period-setting-menu").value == '0'
-})
+  // initialize on DOM ready
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 
-document.getElementById("teachermode").addEventListener("change", (event) => {
-    TeacherMode = event.target.checked
-    setCookie("teachermode", TeacherMode, 30)
-    document.getElementById("timer").innerHTML = "Calculating..."
-})
-
-document.getElementById("customcolor").addEventListener("change", (event) => {
-    if (event.target.value == "#ffffff") {
-        event.target.value = "#000000"
-        alert("please dont set the color to white kthx")
-    }
-    document.getElementById("body").style.color = event.target.value
-    setCookie("color", event.target.value, 30)
-    console.log("cookie: " + getCookie("color"))
-})
-document.getElementById("font-customization-menu").addEventListener("change", () => {
-    document.getElementById('body').style.fontFamily = document.getElementById("font-customization-menu").value
-    setCookie("font", document.getElementById("font-customization-menu").value, 30)
-})
-
-const periods = [
-    "16:00",
-    "9:43",
-    "10:31",
-    "11:18",
-    "12:05",
-    "12:52",
-    "13:39",
-    "14:26",
-    "15:13",
-    "16:00"
-]
-
-const periodEndToggle = document.getElementById("period-end-toggle")
-
-document.getElementById("period-setting-menu").addEventListener("change", () => {
-    const number = Number.parseInt(document.getElementById("period-setting-menu").value)
-    if(isNaN(number) || number == 0) {
-        countDownDate = new Date(`Jun 16, 2025 15:00:01`).getTime()
-        document.getElementById("countdown-until").textContent = "until summer vacation!"
-        periodEndToggle.disabled = true
-        periodEndToggle.checked = false
-        document.getElementById("weekends").disabled = false
-    } else {
-        countDownDate = new Date(`Jun 16, 2025 ${periods[number]}:01`).getTime()
-
-        document.getElementById("countdown-until").textContent = "until summer vacation! (Period " + number.toString() + ")"
-        periodEndToggle.disabled = false
-    }
-    if (periodEndToggle.checked) {
-        const date = new Date()
-        const current = new Date()
-        current.setTime(countDownDate)
-        date.setHours(current.getHours())
-        date.setMinutes(current.getMinutes())
-        date.setSeconds(current.getSeconds())
-        countDownDate = date.getTime()
-        document.getElementById("countdown-until").textContent = "until class is over! (Period " + number.toString() + ")"
-    } else {
-        const number = Number.parseInt(document.getElementById("period-setting-menu").value)
-        countDownDate = new Date(`Jun 16, 2025 ${periods[number]}:01`).getTime()
-        if (number == 0 || isNaN(number)) document.getElementById("countdown-until").textContent = "until summer vacation!"
-        else document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
-    }
-})
-
-
-periodEndToggle.addEventListener("change", () => {
-    if (periodEndToggle.checked) {
-        const date = new Date()
-        const current = new Date()
-        current.setTime(countDownDate)
-        date.setHours(current.getHours())
-        date.setMinutes(current.getMinutes())
-        date.setSeconds(current.getSeconds())
-        countDownDate = date.getTime()
-        const number = Number.parseInt(document.getElementById("period-setting-menu").value)
-        document.getElementById("countdown-until").textContent = "until class is over! (Period " + number.toString() + ")"
-    } else {
-        const number = Number.parseInt(document.getElementById("period-setting-menu").value)
-        countDownDate = new Date(`Jun 16, 2025 ${periods[number]}:01`).getTime()
-        document.getElementById("countdown-until").textContent = "until summer vacation! (For Period " + number.toString() + ")"
-    }
-    document.getElementById("weekends").disabled = periodEndToggle.checked
-})
-
-var font = getCookie("font")
-document.getElementById("font-customization-menu").value = font == "" ? "sans-serif" : font
-document.getElementById('body').style.fontFamily = document.getElementById("font-customization-menu").value
-
-var color = getCookie("color")
-document.getElementById("customcolor").value = color
-document.getElementById("body").style.color = color
-if (getCookie("teachermode") == "true") {
-    TeacherMode = true
-}
-document.getElementById("teachermode").checked = TeacherMode
-
-const settingsButton = document.getElementById('settings-button');
-const settingsMenu = document.getElementById('settings-menu');
-const overlay = document.getElementById('overlay');
-
-settingsButton.addEventListener('click', () => {
-    settingsMenu.classList.toggle('open');
-    overlay.classList.toggle('open');
-});
-
-const closeButton = document.getElementById('close-button');
-
-closeButton.addEventListener('click', () => {
-    settingsMenu.classList.remove('open');
-    overlay.classList.remove('open');
-});
-
-document.addEventListener('click', (event) => {
-    if (!settingsMenu.contains(event.target) && event.target !== settingsButton) {
-        settingsMenu.classList.remove('open');
-        overlay.classList.remove('open');
-    }
-});
-
-document.getElementById("reset-settings").addEventListener("click", (event) => {
-    document.getElementById("body").style.color = event.target.value
-    setCookie("color", event.target.value, 30)
-    TeacherMode = event.target.checked
-    setCookie("teachermode", TeacherMode, 30)
-    document.getElementById("timer").innerHTML = "Calculating..."
-    setCookie("font", "sans-serif", 30)
-    document.getElementById('body').style.fontFamily = 'sans-serif'
-})
+})();
